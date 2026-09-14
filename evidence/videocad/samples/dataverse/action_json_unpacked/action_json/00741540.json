@@ -1,0 +1,112 @@
+[
+  {
+    "timestamp": 1313.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 1421.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1421.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1655.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1655.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1655.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 1655.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 3379.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 4948.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 5028.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 5028.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5329.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5329.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5483.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5483.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5656.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5656.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5842.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5842.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 5842.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 5842.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 8004.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  }
+]

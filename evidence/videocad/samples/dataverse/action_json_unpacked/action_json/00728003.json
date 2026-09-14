@@ -1,0 +1,82 @@
+[
+  {
+    "timestamp": 1143.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 1237.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1237.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1423.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1423.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1423.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 1423.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 2351.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 2939.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 3009.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 3009.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 3195.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 3195.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 3195.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 3195.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 4345.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  }
+]

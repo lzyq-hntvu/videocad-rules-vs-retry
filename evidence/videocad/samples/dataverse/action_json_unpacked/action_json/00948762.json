@@ -1,0 +1,132 @@
+[
+  {
+    "timestamp": 723.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 854.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 854.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1110.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1110.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1110.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 1110.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 3153.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 4929.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 5033.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 5033.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 6112.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 6112.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 7063.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 7063.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 7946.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 7946.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 8870.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 8870.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 9795.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 9795.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 10747.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 10747.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 10747.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 10747.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 13407.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  }
+]

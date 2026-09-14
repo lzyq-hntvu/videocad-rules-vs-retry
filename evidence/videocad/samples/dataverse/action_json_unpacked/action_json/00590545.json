@@ -1,0 +1,532 @@
+[
+  {
+    "timestamp": 964.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 1060.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1060.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1227.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 1227.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1227.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 1227.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 1445.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 1445.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 1649.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 1649.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 1829.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 1829.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 1947.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 1947.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 2076.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 2076.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 2279.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 2279.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 2461.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 2461.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 2588.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 2588.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 2588.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 2588.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 3437.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 4186.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 4283.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 4283.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 4611.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 4611.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 4925.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 4925.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5182.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5182.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5385.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 5385.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 5385.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 5385.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 7252.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 8147.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 8241.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 8241.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 8497.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 8497.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 8824.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 8824.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 9028.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 9028.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 9327.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 9327.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 9327.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 9327.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 11262.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 12132.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 12233.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 12233.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 12493.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 12493.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 12493.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 12493.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 12719.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 12719.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 12719.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 12719.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 14649.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 15785.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 15880.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 15880.0,
+    "status": "started",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 16130.0,
+    "status": "finished",
+    "action": "Drawing Circle"
+  },
+  {
+    "timestamp": 16130.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 16130.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 16130.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 16480.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 16480.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 16790.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 16790.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 17073.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 17073.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 17242.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 17242.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 17440.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 17440.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 17738.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 17738.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 18019.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 18019.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 18215.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 18215.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 18215.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 18215.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 19535.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 20623.0,
+    "status": "started",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 20722.0,
+    "status": "started",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 20722.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 21094.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 21094.0,
+    "status": "started",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 21394.0,
+    "status": "finished",
+    "action": "Drawing Arc"
+  },
+  {
+    "timestamp": 21394.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 21677.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 21677.0,
+    "status": "started",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 21866.0,
+    "status": "finished",
+    "action": "Drawing Line"
+  },
+  {
+    "timestamp": 21866.0,
+    "status": "finished",
+    "action": "Drawing Sketch"
+  },
+  {
+    "timestamp": 21866.0,
+    "status": "finished",
+    "action": "Drawing Curve"
+  },
+  {
+    "timestamp": 21866.0,
+    "status": "started",
+    "action": "Performing Extrusion"
+  },
+  {
+    "timestamp": 24309.0,
+    "status": "finished",
+    "action": "Performing Extrusion"
+  }
+]

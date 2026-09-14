@@ -1,0 +1,195 @@
+{
+  "input_files": {
+    "overlap_csv": "evidence/videocad/notes/cad_action_overlap_samples.csv",
+    "complexity_csv": "evidence/videocad/notes/action_json_file_complexity_metrics.csv",
+    "action_dir": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json"
+  },
+  "merged_row_count": 12145,
+  "missing_complexity_ids_count": 0,
+  "missing_complexity_ids_examples": [],
+  "missing_action_file_ids_count": 0,
+  "missing_action_file_ids_examples": [],
+  "label_distribution_on_overlap_subset": {
+    "medium": 4206,
+    "low": 4004,
+    "high": 3935
+  },
+  "image_count_in_cad_distribution": {
+    "1": 283,
+    "2": 244,
+    "3": 240,
+    "4": 228,
+    "5": 11150
+  },
+  "example_view_count_distribution_from_csv": {
+    "1": 283,
+    "2": 244,
+    "3": 240,
+    "4": 228,
+    "5": 11150
+  },
+  "outputs": {
+    "merged_csv": "evidence/videocad/notes/cad_action_overlap_enriched.csv",
+    "samples_csv": "evidence/videocad/notes/cad_action_multimodal_samples.csv",
+    "summary_json": "evidence/videocad/notes/cad_action_multimodal_sample_pool_summary.json",
+    "sample_per_label_random": 30,
+    "random_seed": 20260226,
+    "sample_row_count": 135
+  },
+  "examples": {
+    "top_high_first5": [
+      {
+        "sample_id": "00161424",
+        "action_json_file": "00161424.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00161424.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0016/00161424_0.png | images/0016/00161424_2.png | images/0016/00161424_1.png | images/0016/00161424_3.png | images/0016/00161424_4.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 136,
+        "pair_count": 68,
+        "unique_action_count": 6,
+        "span_ms": 47299.0,
+        "extrusion_pair_count": 9,
+        "complexity_score": 0.680405,
+        "complexity_label": "high"
+      },
+      {
+        "sample_id": "00085031",
+        "action_json_file": "00085031.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00085031.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0008/00085031_2.png | images/0008/00085031_1.png | images/0008/00085031_4.png | images/0008/00085031_3.png | images/0008/00085031_0.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 126,
+        "pair_count": 63,
+        "unique_action_count": 6,
+        "span_ms": 53161.0,
+        "extrusion_pair_count": 10,
+        "complexity_score": 0.666578,
+        "complexity_label": "high"
+      },
+      {
+        "sample_id": "00026987",
+        "action_json_file": "00026987.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00026987.json",
+        "image_count_in_cad": 4,
+        "example_image_paths": "images/0002/00026987_0.png | images/0002/00026987_1.png | images/0002/00026987_2.png | images/0002/00026987_3.png",
+        "example_view_indices": "0,1,2,3",
+        "event_count": 132,
+        "pair_count": 66,
+        "unique_action_count": 6,
+        "span_ms": 34649.0,
+        "extrusion_pair_count": 10,
+        "complexity_score": 0.66585,
+        "complexity_label": "high"
+      },
+      {
+        "sample_id": "00240998",
+        "action_json_file": "00240998.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00240998.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0024/00240998_2.png | images/0024/00240998_4.png | images/0024/00240998_0.png | images/0024/00240998_1.png | images/0024/00240998_3.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 134,
+        "pair_count": 67,
+        "unique_action_count": 6,
+        "span_ms": 37946.0,
+        "extrusion_pair_count": 9,
+        "complexity_score": 0.663541,
+        "complexity_label": "high"
+      },
+      {
+        "sample_id": "00075025",
+        "action_json_file": "00075025.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00075025.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0007/00075025_0.png | images/0007/00075025_4.png | images/0007/00075025_3.png | images/0007/00075025_2.png | images/0007/00075025_1.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 132,
+        "pair_count": 66,
+        "unique_action_count": 6,
+        "span_ms": 42705.0,
+        "extrusion_pair_count": 9,
+        "complexity_score": 0.662228,
+        "complexity_label": "high"
+      }
+    ],
+    "top_low_first5": [
+      {
+        "sample_id": "00284851",
+        "action_json_file": "00284851.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00284851.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0028/00284851_4.png | images/0028/00284851_2.png | images/0028/00284851_3.png | images/0028/00284851_1.png | images/0028/00284851_0.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 40,
+        "pair_count": 20,
+        "unique_action_count": 4,
+        "span_ms": 10258.0,
+        "extrusion_pair_count": 3,
+        "complexity_score": 0.099832,
+        "complexity_label": "low"
+      },
+      {
+        "sample_id": "00186673",
+        "action_json_file": "00186673.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00186673.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0018/00186673_0.png | images/0018/00186673_2.png | images/0018/00186673_4.png | images/0018/00186673_1.png | images/0018/00186673_3.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 22,
+        "pair_count": 11,
+        "unique_action_count": 5,
+        "span_ms": 7093.0,
+        "extrusion_pair_count": 2,
+        "complexity_score": 0.099828,
+        "complexity_label": "low"
+      },
+      {
+        "sample_id": "00026674",
+        "action_json_file": "00026674.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00026674.json",
+        "image_count_in_cad": 3,
+        "example_image_paths": "images/0002/00026674_0.png | images/0002/00026674_2.png | images/0002/00026674_3.png",
+        "example_view_indices": "0,2,3",
+        "event_count": 22,
+        "pair_count": 11,
+        "unique_action_count": 5,
+        "span_ms": 7091.0,
+        "extrusion_pair_count": 2,
+        "complexity_score": 0.099826,
+        "complexity_label": "low"
+      },
+      {
+        "sample_id": "00245394",
+        "action_json_file": "00245394.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00245394.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0024/00245394_2.png | images/0024/00245394_0.png | images/0024/00245394_3.png | images/0024/00245394_4.png | images/0024/00245394_1.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 22,
+        "pair_count": 11,
+        "unique_action_count": 5,
+        "span_ms": 7080.0,
+        "extrusion_pair_count": 2,
+        "complexity_score": 0.099814,
+        "complexity_label": "low"
+      },
+      {
+        "sample_id": "00102043",
+        "action_json_file": "00102043.json",
+        "action_json_path": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json/00102043.json",
+        "image_count_in_cad": 5,
+        "example_image_paths": "images/0010/00102043_2.png | images/0010/00102043_1.png | images/0010/00102043_3.png | images/0010/00102043_0.png | images/0010/00102043_4.png",
+        "example_view_indices": "0,1,2,3,4",
+        "event_count": 40,
+        "pair_count": 20,
+        "unique_action_count": 4,
+        "span_ms": 10238.0,
+        "extrusion_pair_count": 3,
+        "complexity_score": 0.09981,
+        "complexity_label": "low"
+      }
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "input_dir": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json",
+  "file_count": 44291,
+  "total_events": 2131066,
+  "invalid_files": [],
+  "non_list_files": [],
+  "empty_files_count": 0,
+  "empty_files_examples": [],
+  "files_with_non_dict_event": 0,
+  "monotonic_timestamp_violation_count": 0,
+  "monotonic_timestamp_violation_examples": [],
+  "missing_key_examples": [],
+  "per_file_event_count_stats": {
+    "count": 44291,
+    "min": 16,
+    "max": 138,
+    "mean": 48.1151,
+    "median": 42.0,
+    "p50": 42.0,
+    "p90": 88.0,
+    "p95": 102.0,
+    "p99": 124.0
+  },
+  "per_file_duration_ms_stats": {
+    "count": 44291,
+    "min": 2414.0,
+    "max": 320024.0,
+    "mean": 12956.1641,
+    "median": 10012.0,
+    "p50": 10012.0,
+    "p90": 24943.0,
+    "p95": 30465.5,
+    "p99": 43208.5
+  },
+  "event_keys_frequency": {
+    "timestamp": 2131066,
+    "status": 2131066,
+    "action": 2131066
+  },
+  "status_distribution": {
+    "started": 1065533,
+    "finished": 1065533
+  },
+  "status_unique_count": 2,
+  "action_unique_count": 6,
+  "top_actions": {
+    "Drawing Line": 898436,
+    "Drawing Sketch": 371264,
+    "Drawing Curve": 297324,
+    "Performing Extrusion": 297324,
+    "Drawing Circle": 152822,
+    "Drawing Arc": 113896
+  },
+  "top_action_status_pairs": {
+    "started | Drawing Line": 449218,
+    "finished | Drawing Line": 449218,
+    "started | Drawing Sketch": 185632,
+    "finished | Drawing Sketch": 185632,
+    "started | Drawing Curve": 148662,
+    "finished | Drawing Curve": 148662,
+    "started | Performing Extrusion": 148662,
+    "finished | Performing Extrusion": 148662,
+    "started | Drawing Circle": 76411,
+    "finished | Drawing Circle": 76411,
+    "started | Drawing Arc": 56948,
+    "finished | Drawing Arc": 56948
+  },
+  "sample_files": [
+    {
+      "file": "00000070.json",
+      "event_count": 50,
+      "first_event": {
+        "timestamp": 1217.0,
+        "status": "started",
+        "action": "Drawing Curve"
+      },
+      "last_event": {
+        "timestamp": 25366.0,
+        "status": "finished",
+        "action": "Performing Extrusion"
+      }
+    },
+    {
+      "file": "00000073.json",
+      "event_count": 42,
+      "first_event": {
+        "timestamp": 727.0,
+        "status": "started",
+        "action": "Drawing Curve"
+      },
+      "last_event": {
+        "timestamp": 14276.0,
+        "status": "finished",
+        "action": "Performing Extrusion"
+      }
+    },
+    {
+      "file": "00000123.json",
+      "event_count": 20,
+      "first_event": {
+        "timestamp": 1335.0,
+        "status": "started",
+        "action": "Drawing Curve"
+      },
+      "last_event": {
+        "timestamp": 6337.0,
+        "status": "finished",
+        "action": "Performing Extrusion"
+      }
+    },
+    {
+      "file": "00000126.json",
+      "event_count": 26,
+      "first_event": {
+        "timestamp": 1186.0,
+        "status": "started",
+        "action": "Drawing Curve"
+      },
+      "last_event": {
+        "timestamp": 6160.0,
+        "status": "finished",
+        "action": "Performing Extrusion"
+      }
+    },
+    {
+      "file": "00000172.json",
+      "event_count": 56,
+      "first_event": {
+        "timestamp": 1297.0,
+        "status": "started",
+        "action": "Drawing Curve"
+      },
+      "last_event": {
+        "timestamp": 23153.0,
+        "status": "finished",
+        "action": "Performing Extrusion"
+      }
+    }
+  ]
+}

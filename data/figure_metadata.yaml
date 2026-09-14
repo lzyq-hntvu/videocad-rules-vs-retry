@@ -1,0 +1,120 @@
+# NSFC 申报书配图元数据
+# 图表尺寸、标题、说明等统一配置
+
+metadata:
+  project: "复杂GUI多步骤任务中的视觉可靠性机制研究"
+  created: "2025-03-03"
+  version: "1.0"
+  dpi: 300
+  font:
+    chinese: "SimHei"
+    english: "Arial"
+    min_size: 8
+
+color_scheme:
+  primary: "#2E5C8A"
+  primary_light: "#4A90D9"
+  accent_orange: "#E67E22"
+  accent_red: "#C0392B"
+  accent_green: "#27AE60"
+  text: "#333333"
+  grid: "#E8E8E8"
+
+figures:
+  fig1_framework:
+    title: "研究框架图"
+    subtitle: "感知误差输入-传播-阈值-抑制统一机制"
+    tool: "PaperBanana"
+    status: "待生成"
+    description: "展示H1/H2/H3三条假设及其逻辑关系"
+    size:
+      width: 16
+      height: 10
+      unit: "cm"
+
+  fig2_roadmap:
+    title: "技术路线图"
+    subtitle: "四步研究方案"
+    tool: "PaperBanana"
+    status: "待生成"
+    description: "任务链表示、感知误差建模、传播建模、规则约束"
+    size:
+      width: 16
+      height: 8
+      unit: "cm"
+
+  fig3_experiment_design:
+    title: "实验设计与变量体系"
+    tool: "Draw.io/PowerPoint"
+    status: "待生成"
+    description: "变量-判据体系表的可视化呈现"
+    size:
+      width: 16
+      height: 12
+      unit: "cm"
+
+  fig4_data_platform:
+    title: "数据底座示意图"
+    tool: "PaperBanana"
+    status: "待生成"
+    description: "44,291条动作链、三层复杂度、135条联动样本池"
+    size:
+      width: 16
+      height: 10
+      unit: "cm"
+
+  fig5_h1_degradation:
+    title: "H1预实验结果：退化斜率对比"
+    subtitle: "Robust表征在受控域扰动下的性能保持"
+    tool: "Matplotlib"
+    status: "已完成"
+    description: "300张CAD图像，baseline vs robust退化斜率对比"
+    output_file: "fig5_h1_degradation.png"
+    data_source: "data/preliminary_results.json:h1_results"
+    key_metrics:
+      - "总体: baseline -0.1137 vs robust -0.1050 (+7.65%)"
+      - "Low复杂度: -0.1035 vs -0.0950"
+      - "Medium复杂度: -0.1170 vs -0.0920"
+      - "High复杂度: -0.1205 vs -0.1280"
+    size:
+      width: 16
+      height: 10
+      unit: "cm"
+
+  fig6_h2h3_threshold:
+    title: "H2/H3预实验结果：阈值迁移与规则抑制"
+    subtitle: "误差传播阈值形成与规则约束效果"
+    tool: "Matplotlib"
+    status: "已完成"
+    description: "90条动作链，无规则vs最小规则集阈值对比"
+    output_file: "fig6_h2h3_threshold.png"
+    data_source: "data/preliminary_results.json:h2h3_results"
+    key_metrics:
+      - "Low: ε* 0.04 → 0.08 (+100%)"
+      - "Medium: ε* 0.02 → 0.06 (+200%)"
+      - "High: ε* 0.02 → 0.04 (+100%)"
+    size:
+      width: 18
+      height: 12
+      unit: "cm"
+
+  fig7_error_propagation:
+    title: "误差传播机制示意图"
+    tool: "PaperBanana"
+    status: "待生成"
+    description: "级联失败、非法状态扩散的可视化"
+    size:
+      width: 16
+      height: 10
+      unit: "cm"
+
+naming_conventions:
+  raw: "{name}_v{n}.png"
+  refined: "{name}_refined.png"
+  final: "fig{n}_{name}.png"
+
+workflow:
+  - "raw/: PaperBanana/Matplotlib 原始输出"
+  - "refined/: PowerPoint/PS 精修"
+  - "final/: 最终版本（插入申报书）"
+  - "archive/: 历史版本备份"

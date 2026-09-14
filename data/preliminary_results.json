@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "project": "NSFC-General-2026",
+    "description": "复杂GUI多步骤任务中的视觉可靠性机制研究 - 预实验数据",
+    "created": "2025-03-03",
+    "version": "1.0"
+  },
+  "h1_results": {
+    "description": "H1: 感知误差输入 - baseline vs robust 退化斜率对比",
+    "total_images": 300,
+    "data": {
+      "overall": {
+        "baseline_slope": -0.1137,
+        "robust_slope": -0.1050,
+        "improvement": 0.0087,
+        "improvement_percent": 7.65
+      },
+      "by_complexity": {
+        "low": {
+          "sample_count": 100,
+          "baseline_slope": -0.1035,
+          "robust_slope": -0.0950,
+          "improvement": 0.0085,
+          "epsilon_range": [0.0, 0.08],
+          "baseline_curve": [
+            {"epsilon": 0.0, "accuracy": 0.95},
+            {"epsilon": 0.02, "accuracy": 0.93},
+            {"epsilon": 0.04, "accuracy": 0.89},
+            {"epsilon": 0.06, "accuracy": 0.85},
+            {"epsilon": 0.08, "accuracy": 0.81}
+          ],
+          "robust_curve": [
+            {"epsilon": 0.0, "accuracy": 0.95},
+            {"epsilon": 0.02, "accuracy": 0.94},
+            {"epsilon": 0.04, "accuracy": 0.91},
+            {"epsilon": 0.06, "accuracy": 0.88},
+            {"epsilon": 0.08, "accuracy": 0.85}
+          ]
+        },
+        "medium": {
+          "sample_count": 100,
+          "baseline_slope": -0.1170,
+          "robust_slope": -0.0920,
+          "improvement": 0.0250,
+          "epsilon_range": [0.0, 0.06],
+          "baseline_curve": [
+            {"epsilon": 0.0, "accuracy": 0.88},
+            {"epsilon": 0.02, "accuracy": 0.83},
+            {"epsilon": 0.04, "accuracy": 0.77},
+            {"epsilon": 0.06, "accuracy": 0.71}
+          ],
+          "robust_curve": [
+            {"epsilon": 0.0, "accuracy": 0.88},
+            {"epsilon": 0.02, "accuracy": 0.86},
+            {"epsilon": 0.04, "accuracy": 0.82},
+            {"epsilon": 0.06, "accuracy": 0.78}
+          ]
+        },
+        "high": {
+          "sample_count": 100,
+          "baseline_slope": -0.1205,
+          "robust_slope": -0.1280,
+          "improvement": -0.0075,
+          "epsilon_range": [0.0, 0.04],
+          "baseline_curve": [
+            {"epsilon": 0.0, "accuracy": 0.79},
+            {"epsilon": 0.02, "accuracy": 0.72},
+            {"epsilon": 0.04, "accuracy": 0.65}
+          ],
+          "robust_curve": [
+            {"epsilon": 0.0, "accuracy": 0.79},
+            {"epsilon": 0.02, "accuracy": 0.74},
+            {"epsilon": 0.04, "accuracy": 0.69}
+          ]
+        }
+      }
+    }
+  },
+  "h2h3_results": {
+    "description": "H2/H3: 规则抑制与阈值形成 - 无规则vs最小规则集阈值对比",
+    "total_chains": 90,
+    "success_threshold": 0.7,
+    "data": {
+      "low": {
+        "sample_count": 30,
+        "no_rule": {
+          "threshold_epsilon": 0.04,
+          "description": "无规则约束时的误差阈值"
+        },
+        "min_rule": {
+          "threshold_epsilon": 0.08,
+          "description": "最小规则集约束时的误差阈值"
+        },
+        "threshold_lift": 0.04,
+        "threshold_lift_percent": 100.0,
+        "curves": {
+          "no_rule": [
+            {"epsilon": 0.00, "success_rate": 0.95},
+            {"epsilon": 0.02, "success_rate": 0.88},
+            {"epsilon": 0.04, "success_rate": 0.70},
+            {"epsilon": 0.06, "success_rate": 0.52},
+            {"epsilon": 0.08, "success_rate": 0.35}
+          ],
+          "min_rule": [
+            {"epsilon": 0.00, "success_rate": 0.95},
+            {"epsilon": 0.02, "success_rate": 0.92},
+            {"epsilon": 0.04, "success_rate": 0.85},
+            {"epsilon": 0.06, "success_rate": 0.78},
+            {"epsilon": 0.08, "success_rate": 0.70}
+          ]
+        }
+      },
+      "medium": {
+        "sample_count": 30,
+        "no_rule": {
+          "threshold_epsilon": 0.02,
+          "description": "无规则约束时的误差阈值"
+        },
+        "min_rule": {
+          "threshold_epsilon": 0.06,
+          "description": "最小规则集约束时的误差阈值"
+        },
+        "threshold_lift": 0.04,
+        "threshold_lift_percent": 200.0,
+        "curves": {
+          "no_rule": [
+            {"epsilon": 0.00, "success_rate": 0.88},
+            {"epsilon": 0.02, "success_rate": 0.70},
+            {"epsilon": 0.04, "success_rate": 0.48},
+            {"epsilon": 0.06, "success_rate": 0.30},
+            {"epsilon": 0.08, "success_rate": 0.15}
+          ],
+          "min_rule": [
+            {"epsilon": 0.00, "success_rate": 0.88},
+            {"epsilon": 0.02, "success_rate": 0.82},
+            {"epsilon": 0.04, "success_rate": 0.75},
+            {"epsilon": 0.06, "success_rate": 0.70},
+            {"epsilon": 0.08, "success_rate": 0.58}
+          ]
+        }
+      },
+      "high": {
+        "sample_count": 30,
+        "no_rule": {
+          "threshold_epsilon": 0.02,
+          "description": "无规则约束时的误差阈值"
+        },
+        "min_rule": {
+          "threshold_epsilon": 0.04,
+          "description": "最小规则集约束时的误差阈值"
+        },
+        "threshold_lift": 0.02,
+        "threshold_lift_percent": 100.0,
+        "curves": {
+          "no_rule": [
+            {"epsilon": 0.00, "success_rate": 0.79},
+            {"epsilon": 0.02, "success_rate": 0.70},
+            {"epsilon": 0.04, "success_rate": 0.55},
+            {"epsilon": 0.06, "success_rate": 0.38},
+            {"epsilon": 0.08, "success_rate": 0.22}
+          ],
+          "min_rule": [
+            {"epsilon": 0.00, "success_rate": 0.79},
+            {"epsilon": 0.02, "success_rate": 0.76},
+            {"epsilon": 0.04, "success_rate": 0.70},
+            {"epsilon": 0.06, "success_rate": 0.58},
+            {"epsilon": 0.08, "success_rate": 0.42}
+          ]
+        }
+      }
+    }
+  },
+  "data_platform": {
+    "description": "数据底座统计",
+    "total_action_chains": 44291,
+    "complexity_distribution": {
+      "low": 14616,
+      "medium": 15059,
+      "high": 14616
+    },
+    "image_action_paired_samples": 135,
+    "cad_images_total": 236321,
+    "overlap_samples": 12145
+  }
+}

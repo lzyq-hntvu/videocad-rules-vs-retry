@@ -1,0 +1,31 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Local temp / logs
+tmp/
+*.tmp
+
+# Large downloaded/raw dataset artifacts (keep scripts/notes/logs tracked)
+# cad_imgs.zip (967M, image-side) 刻意不复制进本项目；如需图像侧实验，
+# 从 ~/projects/archived/nsfc-general-2026 读取或按需软链。
+evidence/videocad/samples/dataverse/cad_imgs.zip
+evidence/videocad/samples/dataverse/action_json.zip
+evidence/videocad/notes/h1_proxy_experiment/cache_images/

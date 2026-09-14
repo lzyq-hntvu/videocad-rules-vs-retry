@@ -1,0 +1,177 @@
+{
+  "project": "VideoCAD 7天落地验证",
+  "generated_date": "2026-02-26",
+  "day_range": "Day1-Day6",
+  "core_metrics": {
+    "action_json": {
+      "file_count": 44291,
+      "event_count": 2131066,
+      "action_unique_count": 6,
+      "status_distribution": {
+        "started": 1065533,
+        "finished": 1065533
+      }
+    },
+    "pairing": {
+      "paired_action_segments": 1065533,
+      "pairing_issue_files": 0,
+      "strict_nesting_mismatch_files": 0,
+      "negative_duration_pairs": 0
+    },
+    "complexity_labels_all_action_json": {
+      "medium": 15059,
+      "low": 14616,
+      "high": 14616
+    },
+    "cad_imgs": {
+      "cad_image_file_count": 236321,
+      "cad_unique_sample_ids": 48918,
+      "action_json_overlap_count": 12145,
+      "qa_exact_path_hits_in_cad_zip": 0
+    },
+    "multimodal_overlap_pool": {
+      "merged_overlap_samples": 12145,
+      "label_distribution": {
+        "medium": 4206,
+        "low": 4004,
+        "high": 3935
+      },
+      "sample_rows_exported": 135
+    }
+  },
+  "key_files": [
+    {
+      "path": "evidence/videocad/logs/day1-连通与下载验证.md",
+      "size_bytes": 813,
+      "mtime_epoch": 1772025035,
+      "sha256": "54e3de8c37dc4313a3dd613fe2d4bdf7d06c732f01f1609ac370057df7550f9b"
+    },
+    {
+      "path": "evidence/videocad/logs/day2-action_json下载与字段探查.md",
+      "size_bytes": 2032,
+      "mtime_epoch": 1772076070,
+      "sha256": "11033f39d9dc00925813510b90c454b07a74312f64e66548be41ce51e9e457c6"
+    },
+    {
+      "path": "evidence/videocad/logs/day3-动作配对与复杂度指标.md",
+      "size_bytes": 2054,
+      "mtime_epoch": 1772076449,
+      "sha256": "d9e28d6a4890b6903ceb471d8ef56f3eaf6ff6cd3037fde63d08a0e2e0ce100b"
+    },
+    {
+      "path": "evidence/videocad/logs/day4-复杂度标签与分层抽样.md",
+      "size_bytes": 1734,
+      "mtime_epoch": 1772077058,
+      "sha256": "7bb2b8eabad69e1b15e19352ee5cbed267e1e980d158756b535e12640fb90162"
+    },
+    {
+      "path": "evidence/videocad/logs/day5-cad_imgs结构与映射探查.md",
+      "size_bytes": 2082,
+      "mtime_epoch": 1772077439,
+      "sha256": "f1107964c35d343fa2d310f845aa6b21f0817ac98d060407b52f573c2cb7122e"
+    },
+    {
+      "path": "evidence/videocad/logs/day6-联动样本池与脚本线索.md",
+      "size_bytes": 1858,
+      "mtime_epoch": 1772078468,
+      "sha256": "f5b50e331b04d2745796e9d370b30a206d5f02a6caf3c78a2ec4afe1c13032f6"
+    },
+    {
+      "path": "evidence/videocad/notes/action_json_summary.json",
+      "size_bytes": 3424,
+      "mtime_epoch": 1772076019,
+      "sha256": "714d53e04e8493393a05d5dbdad29aee4112d690231241de50d8420dcdc19a9b"
+    },
+    {
+      "path": "evidence/videocad/notes/action_json_pairing_summary.json",
+      "size_bytes": 3663,
+      "mtime_epoch": 1772076377,
+      "sha256": "f1a9033a13900d3902665c31a387a0779891bc8d8265d854f659c47898717478"
+    },
+    {
+      "path": "evidence/videocad/notes/action_json_complexity_label_summary.json",
+      "size_bytes": 9123,
+      "mtime_epoch": 1772077005,
+      "sha256": "15863ce13ea0cd046a08084d5d03d8e0a5a2ac18d6c28b48153b875ca6f43180"
+    },
+    {
+      "path": "evidence/videocad/notes/cad_imgs_mapping_probe_summary.json",
+      "size_bytes": 5844,
+      "mtime_epoch": 1772077388,
+      "sha256": "7d0f51b4221f0fe21d124167bc39b321a5a40f99a8e04435c3a18ae61f0eb104"
+    },
+    {
+      "path": "evidence/videocad/notes/cad_action_multimodal_sample_pool_summary.json",
+      "size_bytes": 8028,
+      "mtime_epoch": 1772078394,
+      "sha256": "7869868081a9881582d3943633dc929df64573e7af1c60588138992a578c7f4c"
+    },
+    {
+      "path": "evidence/videocad/notes/action_json_file_complexity_metrics.csv",
+      "size_bytes": 2358047,
+      "mtime_epoch": 1772077005,
+      "sha256": "ede0e7c62ed2cdcd586b9820c7a087187613c8726688df00d60fc75262b9f087"
+    },
+    {
+      "path": "evidence/videocad/notes/action_json_complexity_samples.csv",
+      "size_bytes": 10967,
+      "mtime_epoch": 1772077005,
+      "sha256": "a00610f0c8363bf476d78037bcaa008d569f4c06b26d5d3d402a46456ed51977"
+    },
+    {
+      "path": "evidence/videocad/notes/cad_action_overlap_samples.csv",
+      "size_bytes": 1832246,
+      "mtime_epoch": 1772077388,
+      "sha256": "313b583433c7a3c6a505738eac9cba841cfd87c7f35c475d4c5d47d978a95eae"
+    },
+    {
+      "path": "evidence/videocad/notes/cad_action_overlap_enriched.csv",
+      "size_bytes": 3511829,
+      "mtime_epoch": 1772078394,
+      "sha256": "fb493ef3d3be0f3cfed4c627685cf82ea861eaffc531cbd93be507b9488d5043"
+    },
+    {
+      "path": "evidence/videocad/notes/cad_action_multimodal_samples.csv",
+      "size_bytes": 42783,
+      "mtime_epoch": 1772078394,
+      "sha256": "72a6d53b5a76ce506d14e89625d8dc2bcecdf261d5456edebd871263fa9b5617"
+    },
+    {
+      "path": "evidence/videocad/samples/dataverse/action_json.zip",
+      "size_bytes": 23672408,
+      "mtime_epoch": 1772075941,
+      "sha256": "bb5b33fbceb2fe2b4e699f06f523b4819f46fae64046f53f415ec8f29938bd69"
+    },
+    {
+      "path": "evidence/videocad/samples/dataverse/cad_imgs.zip",
+      "size_bytes": 1013972992,
+      "mtime_epoch": 1772077195,
+      "sha256": "4df8bd27f88623de1401481409c951f5c453c2c6bf66deab648db778228bb722"
+    },
+    {
+      "path": "evidence/videocad/samples/dataverse/qa.json",
+      "size_bytes": 5203414,
+      "mtime_epoch": 1772025010,
+      "sha256": "68c8ec6da81c567ae765835e9217fde02e11e0889203bf083dc982d670740c5a"
+    },
+    {
+      "path": "evidence/videocad/notes/sources/harvard_dataverse_metadata.json",
+      "size_bytes": 154733,
+      "mtime_epoch": 1772024982,
+      "sha256": "08a891467400bdcef7393b093697c3141e9e80d3ba3a707964c7b59ccd06faaf"
+    },
+    {
+      "path": "evidence/videocad/notes/sources/VideoCAD_README.md",
+      "size_bytes": 9981,
+      "mtime_epoch": 1772024958,
+      "sha256": "caf658f12f44396552337faad62bf422d692902f8173089c8ba42f41dee4a511"
+    },
+    {
+      "path": "evidence/videocad/notes/sources/generate_dataset.py",
+      "size_bytes": 7719,
+      "mtime_epoch": 1772078402,
+      "sha256": "d783690f5dd9310944e662355b7ba121e84a136014d86d9cc7c6c9d6a0e0b7ea"
+    }
+  ],
+  "missing_key_files": []
+}

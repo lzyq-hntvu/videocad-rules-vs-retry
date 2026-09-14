@@ -1,0 +1,119 @@
+{
+  "experiment": "H2/H3 mechanism proxy (symbolic chain error injection + rule suppression)",
+  "design_notes": {
+    "proxy_level": "event-level symbolic action chain (no GUI bounding boxes yet)",
+    "epsilon_definition": "per-event corruption probability",
+    "corruption_types": {
+      "action_swap": 0.7,
+      "status_flip": 0.3
+    },
+    "success_definition": "syntactically valid chain completed and cumulative mismatch-rate <= threshold",
+    "rule_mode_with_rules": [
+      "enforce stack-consistent finish actions",
+      "convert underflow finish to started to avoid illegal close"
+    ],
+    "mismatch_rate_threshold": 0.12
+  },
+  "inputs": {
+    "samples_csv": "evidence/videocad/notes/cad_action_multimodal_samples.csv",
+    "selected_per_label": 30,
+    "selected_chain_count": 90,
+    "replicates_per_chain_per_epsilon": 40,
+    "epsilon_values": [
+      0.0,
+      0.02,
+      0.04,
+      0.06,
+      0.08,
+      0.1,
+      0.12,
+      0.14,
+      0.16,
+      0.18,
+      0.2
+    ],
+    "seed": 20260226,
+    "action_vocab": [
+      "Drawing Arc",
+      "Drawing Circle",
+      "Drawing Curve",
+      "Drawing Line",
+      "Drawing Sketch",
+      "Performing Extrusion"
+    ]
+  },
+  "selected_chain_distribution": {
+    "low": 30,
+    "medium": 30,
+    "high": 30
+  },
+  "selected_chain_event_count_stats": {
+    "min": 16,
+    "max": 122,
+    "mean": 46.6
+  },
+  "threshold_summary": {
+    "no_rules": {
+      "low": {
+        "epsilon_star_success_lt_0_5": 0.04
+      },
+      "medium": {
+        "epsilon_star_success_lt_0_5": 0.02
+      },
+      "high": {
+        "epsilon_star_success_lt_0_5": 0.02
+      }
+    },
+    "with_rules": {
+      "low": {
+        "epsilon_star_success_lt_0_5": 0.08
+      },
+      "medium": {
+        "epsilon_star_success_lt_0_5": 0.06
+      },
+      "high": {
+        "epsilon_star_success_lt_0_5": 0.04
+      }
+    }
+  },
+  "fail_reason_summary": {
+    "low|no_rules": {
+      "finish_mismatch": 5329,
+      "mismatch_rate_threshold": 3878,
+      "stack_underflow": 702,
+      "non_empty_stack_at_end": 110
+    },
+    "low|with_rules": {
+      "mismatch_rate_threshold": 7575,
+      "non_empty_stack_at_end": 377
+    },
+    "medium|no_rules": {
+      "finish_mismatch": 6415,
+      "non_empty_stack_at_end": 67,
+      "mismatch_rate_threshold": 3982,
+      "stack_underflow": 619
+    },
+    "medium|with_rules": {
+      "mismatch_rate_threshold": 8325,
+      "non_empty_stack_at_end": 574
+    },
+    "high|no_rules": {
+      "mismatch_rate_threshold": 3909,
+      "finish_mismatch": 7097,
+      "non_empty_stack_at_end": 30,
+      "stack_underflow": 562
+    },
+    "high|with_rules": {
+      "mismatch_rate_threshold": 8918,
+      "non_empty_stack_at_end": 776
+    }
+  },
+  "outputs": {
+    "curve_summary_csv": "evidence/videocad/notes/h2_h3_proxy_experiment/curve_summary.csv",
+    "per_run_results_csv": "evidence/videocad/notes/h2_h3_proxy_experiment/per_run_results.csv",
+    "plots": [
+      "evidence/videocad/notes/h2_h3_proxy_experiment/h3_h2_success_rate_vs_epsilon.png",
+      "evidence/videocad/notes/h2_h3_proxy_experiment/h3_h2_fail_step_ratio_vs_epsilon.png"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "qa_item_count": 6000,
+  "qa_id_range": {
+    "min": 0,
+    "max": 5999,
+    "unique_count": 6000
+  },
+  "template_counts": {
+    "ActionFrameTemplate": 1000,
+    "NumExtrusionsTemplate": 1000,
+    "ExtrusionDepthTemplate": 1000,
+    "SequenceTemplate": 1000,
+    "ExtrusionDifferenceTemplate": 1000,
+    "FrameOrderingTemplate": 1000
+  },
+  "image_path_prefix_counts": {
+    "ml_dataset/multi_extrude/qa/images": 14654
+  },
+  "image_ref_index_range": {
+    "min": 0,
+    "max": 14653,
+    "unique_count": 14654,
+    "total_refs": 14654
+  },
+  "direct_action_json_filename_match_in_qa_text": false,
+  "note": "qa.json references QA image paths (ml_dataset/.../qa/images/image_*.png); no direct 8-digit action_json filename observed in qa fields."
+}

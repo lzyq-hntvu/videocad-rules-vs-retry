@@ -1,0 +1,90 @@
+{
+  "experiment": "H1 proxy: controlled domain shift robustness via image retrieval/matching proxy",
+  "design_notes": {
+    "proxy_task": "retrieve original CAD image under controlled domain shift perturbations",
+    "baseline_descriptor": "raw grayscale 64x64 flattened normalized",
+    "robust_descriptor": "autocontrast+equalized grayscale, pooled intensity + gradient magnitude + histogram",
+    "domain_shift": "controlled composite perturbation (brightness/contrast, blur, scale jitter, occlusion, noise)",
+    "claim_boundary": "proxy evidence for robustness trend; not GUI element detection/localization benchmark"
+  },
+  "inputs": {
+    "enriched_csv": "evidence/videocad/notes/cad_action_overlap_enriched.csv",
+    "cad_zip": "evidence/videocad/samples/dataverse/cad_imgs.zip",
+    "sample_per_label": 100,
+    "total_images": 300,
+    "replicates_per_strength": 2,
+    "strength_values": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "seed": 20260226
+  },
+  "selected_distribution": {
+    "low": 100,
+    "medium": 100,
+    "high": 100
+  },
+  "batch_extract_info": {
+    "requested": 300,
+    "batch_missing_before": 0,
+    "batch_present_after": 300,
+    "bsdtar_returncode": 0
+  },
+  "h1_compact_comparison": {
+    "all": {
+      "top1_acc_strength0": {
+        "baseline": 0.97,
+        "robust": 0.97
+      },
+      "top1_acc_strength_max": {
+        "baseline": 0.515,
+        "robust": 0.558333
+      }
+    },
+    "low": {
+      "top1_acc_strength0": {
+        "baseline": 0.96,
+        "robust": 0.96
+      },
+      "top1_acc_strength_max": {
+        "baseline": 0.51,
+        "robust": 0.45
+      }
+    },
+    "medium": {
+      "top1_acc_strength0": {
+        "baseline": 0.97,
+        "robust": 0.97
+      },
+      "top1_acc_strength_max": {
+        "baseline": 0.465,
+        "robust": 0.61
+      }
+    },
+    "high": {
+      "top1_acc_strength0": {
+        "baseline": 0.98,
+        "robust": 0.98
+      },
+      "top1_acc_strength_max": {
+        "baseline": 0.57,
+        "robust": 0.615
+      }
+    }
+  },
+  "outputs": {
+    "selected_images_csv": "evidence/videocad/notes/h1_proxy_experiment/selected_images.csv",
+    "summary_curve_csv": "evidence/videocad/notes/h1_proxy_experiment/summary_curve.csv",
+    "degradation_slopes_csv": "evidence/videocad/notes/h1_proxy_experiment/degradation_slopes.csv",
+    "per_query_results_csv": "evidence/videocad/notes/h1_proxy_experiment/per_query_results.csv",
+    "plots": [
+      "evidence/videocad/notes/h1_proxy_experiment/h1_proxy_top1_acc_vs_shift.png",
+      "evidence/videocad/notes/h1_proxy_experiment/h1_proxy_mrr_vs_shift.png",
+      "evidence/videocad/notes/h1_proxy_experiment/h1_proxy_top1_by_complexity.png"
+    ],
+    "cache_dir": "evidence/videocad/notes/h1_proxy_experiment/cache_images"
+  }
+}

@@ -1,0 +1,17 @@
+subset,method,metric,slope_per_strength,delta_0_to_max
+all,baseline,top1_acc,-0.113667,-0.455
+all,baseline,mrr,-0.087495,-0.356703
+all,robust,top1_acc,-0.105,-0.411667
+all,robust,mrr,-0.078654,-0.30749
+low,baseline,top1_acc,-0.1205,-0.45
+low,baseline,mrr,-0.094374,-0.36231
+low,robust,top1_acc,-0.128,-0.51
+low,robust,mrr,-0.095569,-0.378242
+medium,baseline,top1_acc,-0.117,-0.505
+medium,baseline,mrr,-0.089753,-0.391435
+medium,robust,top1_acc,-0.092,-0.36
+medium,robust,mrr,-0.06871,-0.269448
+high,baseline,top1_acc,-0.1035,-0.41
+high,baseline,mrr,-0.078358,-0.316362
+high,robust,top1_acc,-0.095,-0.365
+high,robust,mrr,-0.071683,-0.274779

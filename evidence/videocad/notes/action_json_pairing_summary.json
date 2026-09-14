@@ -1,0 +1,164 @@
+{
+  "input_dir": "evidence/videocad/samples/dataverse/action_json_unpacked/action_json",
+  "file_count": 44291,
+  "invalid_files": [],
+  "files_with_pairing_issues": 0,
+  "files_with_strict_nesting_mismatch": 0,
+  "files_with_non_monotonic_ts": 0,
+  "strict_mismatch_total": 0,
+  "strict_underflow_total": 0,
+  "loose_negative_duration_pairs": 0,
+  "global_action_started": {
+    "Drawing Line": 449218,
+    "Drawing Sketch": 185632,
+    "Drawing Curve": 148662,
+    "Performing Extrusion": 148662,
+    "Drawing Circle": 76411,
+    "Drawing Arc": 56948
+  },
+  "global_action_finished": {
+    "Drawing Line": 449218,
+    "Drawing Sketch": 185632,
+    "Drawing Curve": 148662,
+    "Performing Extrusion": 148662,
+    "Drawing Circle": 76411,
+    "Drawing Arc": 56948
+  },
+  "pair_count_by_action": {
+    "Drawing Line": 449218,
+    "Drawing Sketch": 185632,
+    "Drawing Curve": 148662,
+    "Performing Extrusion": 148662,
+    "Drawing Circle": 76411,
+    "Drawing Arc": 56948
+  },
+  "unmatched_start_by_action": {},
+  "unmatched_finish_by_action": {},
+  "action_duration_ms_stats": {
+    "Drawing Arc": {
+      "count": 56948,
+      "min": 120.0,
+      "max": 2666.0,
+      "mean": 555.0845,
+      "median": 302.0,
+      "p90": 1651.0,
+      "p95": 1781.0,
+      "p99": 2400.0
+    },
+    "Drawing Circle": {
+      "count": 76411,
+      "min": 84.0,
+      "max": 1768.0,
+      "mean": 345.4196,
+      "median": 242.0,
+      "p90": 874.0,
+      "p95": 925.0,
+      "p99": 1524.0
+    },
+    "Drawing Curve": {
+      "count": 148662,
+      "min": 114.0,
+      "max": 45024.0,
+      "mean": 1377.2091,
+      "median": 864.0,
+      "p90": 2992.9,
+      "p95": 4155.95,
+      "p99": 8135.0
+    },
+    "Drawing Line": {
+      "count": 449218,
+      "min": 8.0,
+      "max": 3146.0,
+      "mean": 296.1245,
+      "median": 186.0,
+      "p90": 840.0,
+      "p95": 905.0,
+      "p99": 1138.0
+    },
+    "Drawing Sketch": {
+      "count": 185632,
+      "min": 84.0,
+      "max": 25389.0,
+      "mean": 1029.1081,
+      "median": 660.0,
+      "p90": 2501.0,
+      "p95": 3569.0,
+      "p99": 6575.69
+    },
+    "Performing Extrusion": {
+      "count": 148662,
+      "min": 536.0,
+      "max": 315032.0,
+      "mean": 1741.4356,
+      "median": 1767.0,
+      "p90": 2361.0,
+      "p95": 2553.0,
+      "p99": 2787.0
+    }
+  },
+  "total_paired_actions_with_duration": 1065533,
+  "mean_paired_action_duration_ms_overall": 793.6766,
+  "per_file_event_count_stats": {
+    "count": 44291,
+    "min": 16.0,
+    "max": 138.0,
+    "mean": 48.1151,
+    "median": 42.0,
+    "p90": 88.0,
+    "p95": 102.0,
+    "p99": 124.0
+  },
+  "per_file_pair_count_stats": {
+    "count": 44291,
+    "min": 8.0,
+    "max": 69.0,
+    "mean": 24.0576,
+    "median": 21.0,
+    "p90": 44.0,
+    "p95": 51.0,
+    "p99": 62.0
+  },
+  "per_file_unique_action_count_stats": {
+    "count": 44291,
+    "min": 4.0,
+    "max": 6.0,
+    "mean": 4.6308,
+    "median": 4.0,
+    "p90": 6.0,
+    "p95": 6.0,
+    "p99": 6.0
+  },
+  "per_file_span_ms_stats": {
+    "count": 44291,
+    "min": 2414.0,
+    "max": 320024.0,
+    "mean": 12956.1641,
+    "median": 10012.0,
+    "p90": 24943.0,
+    "p95": 30465.5,
+    "p99": 43208.5
+  },
+  "per_file_max_nesting_depth_stats": {
+    "count": 44291,
+    "min": 3.0,
+    "max": 3.0,
+    "mean": 3.0,
+    "median": 3.0,
+    "p90": 3.0,
+    "p95": 3.0,
+    "p99": 3.0
+  },
+  "per_file_pairing_completion_rate_stats": {
+    "count": 44291,
+    "min": 1.0,
+    "max": 1.0,
+    "mean": 1.0,
+    "median": 1.0,
+    "p90": 1.0,
+    "p95": 1.0,
+    "p99": 1.0
+  },
+  "issue_examples": [],
+  "top_complex_files_csv": "evidence/videocad/notes/action_json_top_complex_files.csv",
+  "top_n": 120
+}
