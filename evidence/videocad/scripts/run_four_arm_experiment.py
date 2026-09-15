@@ -300,8 +300,10 @@ def main() -> None:
                         help="使用 CSV 全部行（确认集口径：CSV 即样本清单）")
     parser.add_argument("--replicates", type=int, default=20)
     parser.add_argument("--eps-list", type=str,
-                        default="0,0.02,0.04,0.06,0.08,0.10,0.12,0.14,0.16,0.18,0.20",
-                        help="逗号分隔的 ε 网格（跨档共享同一组注入随机数）")
+                        default=",".join(f"{i*0.02:.2f}" for i in range(26)),
+                        help="逗号分隔的 ε 网格（默认 26 档 0→0.50；跨档共享同一组注入随机数。"
+                             "⚠ 不要缩小：0.20 上限会使 min_rules 在 low/medium 层右删失，"
+                             "Δε* 无法计算——审计 §3.1")
     parser.add_argument("--k", type=int, default=2, help="单步重试上限（超出即放弃该步）")
     parser.add_argument("--budget-ratio", type=float, default=0.2, help="预算 B = ceil(L*(1+r)) 的 r")
     parser.add_argument("--swap-prob", type=float, default=0.7, help="误差注入动作替换配比（其余为状态翻转）")
@@ -455,7 +457,8 @@ def main() -> None:
                 "grid": [0.0, 0.5, 0.9],
                 "interpretation": ("ρ=0 瞬时/执行类误差（时序、竞态、点击抖动），重试独立重抽；"
                                    "ρ→1 可重复误差（感知类），重试失效。"
-                                   "论文主张：规则对可重复误差有价值；对瞬时误差，重试已经足够。"),
+                                   "论文主张：规则对可重复误差有价值；对瞬时误差，预算充足时重试已经足够"
+                                   "（ρ=0 结论必须与 r 条件同引，audit §3.3/§3.4）。"),
             },
             "injection": {"per_event_probability": "epsilon", "action_swap_prob": args.swap_prob,
                            "status_flip_prob": round(1 - args.swap_prob, 6)},
