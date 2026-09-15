@@ -38,9 +38,12 @@ COLORS = {
 
 
 def load_data():
-    data_path = Path(__file__).parent.parent / "data" / "preliminary_results.json"
-    with open(data_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    # 2026-09-15: data/preliminary_results.json 已隔离（非管线产物，见
+    # docs/audit-2026-09-15-data-lineage-and-rng.md）。本脚本禁用，待重接到真实管线输出。
+    raise SystemExit(
+        f"{Path(__file__).name}: 数据源 preliminary_results.json 已撤回隔离，本脚本禁用。"
+        "真实结果见 evidence/videocad/notes/h2_h3_proxy_experiment/ 与 tmp/dev_five_arm/。"
+    )
     return data["h2h3_results"]
 
 

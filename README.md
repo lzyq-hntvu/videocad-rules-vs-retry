@@ -85,8 +85,8 @@ time python3 evidence/videocad/scripts/run_h2_h3_mechanism_proxy.py \
 # 开发集全量复现（90 链 × 40 重复 × 11 ε 档，两臂）：
 python3 evidence/videocad/scripts/run_h2_h3_mechanism_proxy.py
 
-# 作图（需 matplotlib + numpy）：
-python3 scripts/plot_h2h3_results.py
+# 作图（注意：plot_h1/h2h3_results.py 因数据源撤回已禁用，见数据红线）
+python3 scripts/plot_h2h3_results.py   # → 退出并指向真实数据源
 ```
 
 环境：Python 3.12（WSL2 系统 Python 即可，numpy / PIL / matplotlib 已装）。
@@ -104,13 +104,19 @@ python3 scripts/plot_h2h3_results.py
 
 **主断言必须对 `retry_oracle` 成立。** 只赢过 `retry_selfreport` 就如实写成较弱结论。
 
-## 既有实验输出（从旧仓库复制，口径见各文件）
+# ⚠ 数据红线（2026-09-15 审计，详见 [docs/audit-2026-09-15-data-lineage-and-rng.md](docs/audit-2026-09-15-data-lineage-and-rng.md)）
 
-- `evidence/videocad/notes/h2_h3_proxy_experiment/` — 90 链 × 40 重复 × 11 ε，no_rules vs with_rules 两臂结果与图
-- `evidence/videocad/notes/h1_proxy_experiment/` — H1 域移位代理结果
-- `data/preliminary_results.json` — 本子预实验数值（H1 退化斜率等）
+- **`data/preliminary_results.json` 已撤回隔离**至 `data/quarantine/`——它不是管线产物（ε=0 时成功率物理上不可能 <1；六个 ε\* 全部恰好命中 0.70 格点；判据 0.7 vs 脚本 0.5）。**任何图表、论文、本子回填不得引用。** 真实两臂输出在 `evidence/videocad/notes/h2_h3_proxy_experiment/`（同参数重跑逐字节一致，已验证）。
+- 五个臂的正式实验一律用 **`run_five_arm_experiment.py`**（配对随机数、成败定义零 gt、参数全申报）；旧 `run_h2_h3_mechanism_proxy.py` 仅作历史两臂对照。
+- `rules_retry ≡ min_rules` 结构退化已实证（39,600/39,600 全同），处置待决策（审计 F5）。
 
-> 注意：既有输出的 ε\* 取格点值、判据线与正文口径不一致——方案 v1 步骤四（插值 + 链级 bootstrap CI）正是为此，新实验一律用新口径。
+## 既有实验输出（真实管线产物，可引用）
+
+- `evidence/videocad/notes/h2_h3_proxy_experiment/` — 90 链 × 40 重复 × 11 ε，no_rules vs with_rules 两臂结果与图（parity 已验证）
+- `evidence/videocad/notes/h1_proxy_experiment/` — H1 域移位代理结果（H1 不在本文范围）
+- 新五臂开发集输出 — `evidence/videocad/notes/five_arm_dev/`（90 × 40 × 11 ε × 5 臂的结论件；per_run 大表可一键再生成，见审计末节；确认集跑批后入 `notes/five_arm_confirm/` 并打 tag）
+
+> 注意：旧两臂输出的 ε\* 取格点值——方案 v1 步骤四（插值 + 链级 bootstrap CI）正是为此，新实验一律用新口径。旧输出的 with_rules 臂被已移除的 gt 判定（mismatch-budget 0.12）压低约 0.15，跨口径比较时见审计 F3 量化。
 
 ## 状态
 
@@ -118,8 +124,12 @@ python3 scripts/plot_h2h3_results.py
 - [x] 实测单次耗时：≈0.1 ms/run（3,300 runs 计时通过 1.6s，含约 1.3s 固定启动）→
       全量 1,104,000 runs 纯模拟约 2–3 分钟，加 I/O 也在小时级以内。
       **不需要回调重复数或链数**（方案表 D 的预案不触发）
-- [ ] 步骤一：三个新臂实现与单测（`retry_selfreport` / `retry_oracle` / `rules_retry`）
+- [x] **数据血缘与 RNG 审计**（2026-09-15，docs/audit-2026-09-15）：伪造 JSON 撤回隔离、
+      五臂新引擎（配对随机数 + 成败定义零 gt + 参数全申报）、旧管线 parity 逐字节验证通过、
+      开发集五臂 sanity 全过（含 rules_retry 退化实证 39,600/39,600）
+- [x] LICENSE（MIT）
+- [ ] **F5 待决策**：rules_retry 退化处置（保留报冗余 / 改 min_rules+retry_oracle / 移除）
 - [ ] 步骤二：确认集 600 条抽样（200/200/200，与开发集不相交，种子入补充材料）
-- [ ] 步骤四：ε\* 插值 + 链级 bootstrap 口径锁定（先于全量开跑）
+- [ ] 步骤四：链级 bootstrap CI 实现（ε\* 插值已在新引擎内）
 - [ ] 主实验 780,000 runs → 决策门（2026-09-28 周末）
 - [ ] 步骤三：规则类型消融（9 条件 × 3 ε）→ 图 3 图 4 三表 → 英文初稿 → MiTA 投稿
