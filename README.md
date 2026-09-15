@@ -82,8 +82,17 @@ time python3 evidence/videocad/scripts/run_h2_h3_mechanism_proxy.py \
   --per-label 3 --replicates 2 --eps-stop 0.04 \
   --out-dir tmp/smoke_h2h3
 
-# 开发集全量复现（90 链 × 40 重复 × 11 ε 档，两臂）：
+# 开发集全量复现（90 链 × 40 重复 × 11 ε 档，历史两臂）：
 python3 evidence/videocad/scripts/run_h2_h3_mechanism_proxy.py
+
+# 四臂引擎 ρ 扫描（开发集；约 100 秒跑完全部 3 档）：
+for rho in 0.0 0.5 0.9; do
+  python3 evidence/videocad/scripts/run_four_arm_experiment.py \
+    --per-label 30 --replicates 40 \
+    --eps-list 0,0.02,0.04,0.06,0.08,0.10,0.12,0.14,0.16,0.18,0.20 \
+    --k 2 --budget-ratio 0.2 --retry-repro-prob $rho --seed 20260226 \
+    --out-dir tmp/dev_four_arm_rho$(echo $rho | tr -d '.')
+done
 
 # 作图（注意：plot_h1/h2h3_results.py 因数据源撤回已禁用，见数据红线）
 python3 scripts/plot_h2h3_results.py   # → 退出并指向真实数据源
@@ -92,23 +101,29 @@ python3 scripts/plot_h2h3_results.py   # → 退出并指向真实数据源
 环境：Python 3.12（WSL2 系统 Python 即可，numpy / PIL / matplotlib 已装）。
 核心模拟脚本只依赖标准库，matplotlib 缺失时自动跳过作图不报错。
 
-## 五臂定义（方案 v1 表 A，步骤一待实现）
+## 四臂定义（方案 v1 表 A + 二轮修正案；F5 已决议选 C，预登记锁死）
 
 | 标识 | 定义 | 角色 |
 |---|---|---|
-| `no_rules` | 无约束，误差注入后直接执行 | 下界（✅ 已有） |
-| `retry_selfreport` | 环境判非法才重试该步，每步至多 k 次 | 现实重试基线（待实现） |
-| **`retry_oracle`** | 偏离预期状态转移即重试（完美检测），每步至多 k 次 | **主对照**（待实现） |
-| `min_rules` | 栈一致性收束 + 非法关闭修正（= 脚本现有 `use_rules=True`） | 待检验项（✅ 已有） |
-| `rules_retry` | `min_rules` + `retry_selfreport` | 互补还是冗余（待实现） |
+| `no_rules` | 无约束，误差注入后直接执行 | 下界（✅ 旧管线已有对应臂） |
+| `retry_selfreport` | 环境判非法（栈下溢/finish 失配，不读 gt）才重试该步，每步至多 k 次 | 现实重试基线（✅ 新引擎） |
+| **`retry_oracle`** | 偏离预期状态转移（attempt ≠ gt event）即重试（完美检测），每步至多 k 次 | **主对照**（✅ 新引擎） |
+| `min_rules` | 栈一致性收束 + 非法关闭修正（含一处 gt 修复声明，oracle 级信息） | 待检验项（✅ 旧口径保留） |
+
+> ~~`rules_retry`~~ **已移除**（F5 选 C）：min_rules 是全覆盖修复策略，叠加的重试层恒为惰性——39,600/39,600 runs 实证。方法句锁死见审计 §2.1。
+> 第五臂的余留问题（"oracle 检测叠加在修复之上"）归第二篇论文或 Discussion。
+
+**申报参数**（全部 CLI 化，进 summary.json）：k（默认 2，敏感性 {1,3}）、r（默认 0.2，敏感性 {0.5}）、
+swap_prob（0.7）、**ρ `--retry-repro-prob`（默认 0，扫描 {0, 0.5, 0.9}）**、判据 0.5（敏感性 0.7）。
+ρ = 重试复现同一误差的概率：0 = 独立重抽（重试上界），1 = 重试无效。开发集结论：**ρ ≥ 0.5 时规则三层全胜**（审计 §2.2）。
 
 **主断言必须对 `retry_oracle` 成立。** 只赢过 `retry_selfreport` 就如实写成较弱结论。
 
 # ⚠ 数据红线（2026-09-15 审计，详见 [docs/audit-2026-09-15-data-lineage-and-rng.md](docs/audit-2026-09-15-data-lineage-and-rng.md)）
 
 - **`data/preliminary_results.json` 已撤回隔离**至 `data/quarantine/`——它不是管线产物（ε=0 时成功率物理上不可能 <1；六个 ε\* 全部恰好命中 0.70 格点；判据 0.7 vs 脚本 0.5）。**任何图表、论文、本子回填不得引用。** 真实两臂输出在 `evidence/videocad/notes/h2_h3_proxy_experiment/`（同参数重跑逐字节一致，已验证）。
-- 五个臂的正式实验一律用 **`run_five_arm_experiment.py`**（配对随机数、成败定义零 gt、参数全申报）；旧 `run_h2_h3_mechanism_proxy.py` 仅作历史两臂对照。
-- `rules_retry ≡ min_rules` 结构退化已实证（39,600/39,600 全同），处置待决策（审计 F5）。
+- 正式实验一律用 **`run_four_arm_experiment.py`**（配对随机数、成败定义零 gt、ρ 误差相关性、参数全申报）；旧 `run_h2_h3_mechanism_proxy.py` 仅作历史两臂对照（其 no_rules 基线内含 gt 监控，见审计补笔 2）。
+- ~~`rules_retry ≡ min_rules` 结构退化已实证（39,600/39,600 全同），处置待决策~~ → **F5 已决议选 C**：臂已移除，验证降级为方法句（审计 §2.1）。
 
 ## 既有实验输出（真实管线产物，可引用）
 
@@ -125,11 +140,15 @@ python3 scripts/plot_h2h3_results.py   # → 退出并指向真实数据源
       全量 1,104,000 runs 纯模拟约 2–3 分钟，加 I/O 也在小时级以内。
       **不需要回调重复数或链数**（方案表 D 的预案不触发）
 - [x] **数据血缘与 RNG 审计**（2026-09-15，docs/audit-2026-09-15）：伪造 JSON 撤回隔离、
-      五臂新引擎（配对随机数 + 成败定义零 gt + 参数全申报）、旧管线 parity 逐字节验证通过、
-      开发集五臂 sanity 全过（含 rules_retry 退化实证 39,600/39,600）
+      四臂新引擎（配对随机数 + 成败定义零 gt + 参数全申报）、旧管线 parity 逐字节验证通过、
+      开发集 sanity 全过
+- [x] **F5 决议（选 C）**：rules_retry 臂移除，退化验证（39,600/39,600）降级为 Section III 方法句，预登记锁死
+- [x] **ρ 误差相关性参数**：`--retry-repro-prob`，开发集扫描 {0, 0.5, 0.9}——
+      ρ=0 时主对比指向 null（规格缺陷证据），ρ≥0.5 时规则三层全胜；
+      论文 headline 升级为"重试何时够用取决于误差可重复性 ρ"
 - [x] LICENSE（MIT）
-- [ ] **F5 待决策**：rules_retry 退化处置（保留报冗余 / 改 min_rules+retry_oracle / 移除）
+- [ ] **决策门按 ρ 重新表述并锁死**（建议稿见审计 §2.2；待申请人确认）
 - [ ] 步骤二：确认集 600 条抽样（200/200/200，与开发集不相交，种子入补充材料）
-- [ ] 步骤四：链级 bootstrap CI 实现（ε\* 插值已在新引擎内）
-- [ ] 主实验 780,000 runs → 决策门（2026-09-28 周末）
+- [ ] 步骤四：链级 bootstrap CI 实现（ε\* 插值已在引擎内）
+- [ ] 主实验（含 ρ 网格）→ 决策门（2026-09-28 周末）
 - [ ] 步骤三：规则类型消融（9 条件 × 3 ε）→ 图 3 图 4 三表 → 英文初稿 → MiTA 投稿

@@ -1,27 +1,44 @@
 #!/usr/bin/env python3
-"""Five-arm error-injection experiment on VideoCAD symbolic action chains.
+"""Four-arm paired error-injection experiment on VideoCAD symbolic action chains.
 
-对应实验方案 v1 步骤一：在旧 H2/H3 两臂管线之外补上三个重试臂，共五臂同场。
+对应实验方案 v1 步骤一 + 2026-09-15 二轮修正案（docs/audit-2026-09-15-data-lineage-and-rng.md §二轮）：
 
-Arms（表 A）:
+Arms（表 A，四臂——F5 决议 C）:
   no_rules         无任何约束，误差注入后直接执行（下界）
-  retry_selfreport 环境判非法（栈下溢 / finish 失配）才重试该步，每步至多 k 次
+  retry_selfreport 环境判非法（栈下溢 / finish 失配，不读 gt）才重试该步，每步至多 k 次
   retry_oracle     任一步偏离预期状态转移（attempt != gt event）即重试，每步至多 k 次
-  min_rules        栈一致性收束 + 非法关闭修正（沿用本子代理实验口径，含一处 gt 修复，
-                   属 oracle 级信息——Section III 明面上申报，与 retry_oracle 信息等级对齐）
-  rules_retry      min_rules + retry_selfreport
+  min_rules        栈一致性收束 + 非法关闭修正（沿用本子代理实验口径，含一处 gt 修复声明，
+                   属 oracle 级信息——Section III 申报，与 retry_oracle 信息等级对齐）
 
-随机数纪律（方案 v1 步骤一表 B + 审查结论二）:
-  - 初始误差向量按 (chain, rep) 由 sha256 确定性导出种子预生成为**定长三元组数组**，
-    同一 (chain, rep) 下**所有臂、所有 ε 档共用同一组数组**（common random numbers，
-    跨臂配对 + 跨 ε 配对）。ε 只参与"u < ε"判定，不参与抽样。
-  - 重试的重新抽样走**独立的另行播种流**：(seed, "retry", chain, rep, step, attempt)。
-  - 任何臂的增加/删减、循环顺序调整都不会改变已有结果（无顺序推进母发生器）。
+关于已移除的第五臂（rules_retry）：min_rules 是全覆盖修复策略——检测到的每种违规都修，
+执行按构造不抛错，叠加其上的重试层恒为惰性。已实证（39,600/39,600 runs 逐 run 相同）。
+论文 Section III 方法句（预登记锁死）：
+  "min_rules is a total repair policy: every violation it detects, it corrects, so
+   execution never raises and a retry layer placed on top is inert by construction.
+   We verified this empirically (39,600/39,600 runs identical) and therefore report
+   four arms rather than five."
 
-成败定义（不含 gt，审查结论四+补充）:
+误差相关性 ρ（--retry-repro-prob，二轮修正案 F6）:
+  真实 GUI 中重试大概率复现同一误差（感知器把按钮定位错，重跑同一步会再错），旧规格
+  "fresh independent draw" 把重试设成了最有利形态（ρ=0：P(步失败)=ε^(k+1)，几何收敛，
+  开发集实证 retry_oracle 以 ~0.3 优势碾压 min_rules——规格缺陷，非重试的真实强度）。
+  ρ = 重试复现主尝试同一误差的概率：
+    ρ=0   独立重抽（对重试最有利，重试上界）
+    ρ=1   确定性复现（重试完全无效）
+  每次重试：从重试流抽 u_corr；u_corr < ρ → 复现主尝试的同一事件；否则独立重抽。
+  论文 headline 由"规则赢/输"升级为"重试何时够用，取决于误差的可重复性 ρ"。
+
+随机数纪律（F2）:
+  - 初始误差向量按 (chain, rep) 由 sha256 确定性导出种子预生成为定长三元组数组，
+    同一 (chain, rep) 下所有臂、所有 ε 档共用（corrupt 判定 u<ε，ε 不参与抽样；
+    common random numbers，跨臂 + 跨 ε 双重配对）。
+  - 重试独立流 sha256(seed,"retry",chain,rep,step,attempt)：先抽 ρ 相关判定，
+    再（若独立重抽）抽三元组。与主向量完全隔离，无顺序推进母发生器。
+
+成败定义（不含 gt，F3）:
   success = 全程无步放弃、无环境错误终止、结束时栈为空。
-  旧管线中的 cumulative mismatch-rate > threshold 判定**读取 gt 比较**，已从成败路径移除；
-  mismatch 仅作分析统计输出。全部自由参数见 summary.json design_notes。
+  旧管线 cumulative mismatch-rate 判定（所有臂共用、读 gt）已移出成败路径；
+  mismatch 仅作分析统计输出。oracle 通道清单见 summary.json design_notes。
 """
 from __future__ import annotations
 
@@ -37,8 +54,8 @@ from pathlib import Path
 
 from run_h2_h3_mechanism_proxy import load_events, load_selected_chains
 
-ARMS = ("no_rules", "retry_selfreport", "retry_oracle", "min_rules", "rules_retry")
-RETRY_ARMS = ("retry_selfreport", "retry_oracle", "rules_retry")
+ARMS = ("no_rules", "retry_selfreport", "retry_oracle", "min_rules")
+RETRY_ARMS = ("retry_selfreport", "retry_oracle")
 VALID_STATUS = ("started", "finished")
 
 
@@ -62,7 +79,7 @@ def build_attempt(
     epsilon: float,
     swap_prob: float,
 ) -> dict:
-    """按预生成三元组构造一次尝试。corrupt iff u<ε；70/30 配比（可 CLI 调，申报）。"""
+    """按预生成三元组构造一次尝试。corrupt iff u<ε；swap_prob 配比可 CLI 调（申报）。"""
     status, action = event["status"], event["action"]
     u, v, w = triple
     if u < epsilon:
@@ -88,7 +105,7 @@ def env_would_error(stack: list[str], attempt: dict) -> bool:
 
 
 def execute_attempt(stack: list[str], attempt: dict) -> str | None:
-    """执行已通过检定的尝试；返回环境错误码或 None。调用前必须已通过 env_would_error 或 oracle 检定。"""
+    """执行已通过检定的尝试；返回环境错误码或 None。"""
     if attempt["status"] == "started":
         stack.append(attempt["action"])
         return None
@@ -149,6 +166,7 @@ def run_arm(
     rep: int,
     seed: int,
     swap_prob: float,
+    retry_repro_prob: float,
 ) -> ArmResult:
     L = len(events)
     stack: list[str] = []
@@ -178,7 +196,7 @@ def run_arm(
             mismatch += int(is_mismatch(primary, events[i]))
             continue
 
-        # 重试臂：t=0 用共享初始向量，t>=1 走独立重试流
+        # 重试臂：t=0 用共享初始向量，t>=1 走独立重试流（先抽 ρ 判定，再决定是否独立重抽）
         step_done = False
         for t in range(k + 1):
             if attempts >= budget:
@@ -187,12 +205,13 @@ def run_arm(
                 att = dict(primary)
             else:
                 rng_r = random.Random(seed_from(seed, "retry", chain_id, rep, i, t))
-                att = build_attempt(events[i], alt_lists[i], draw_triple(rng_r), epsilon, swap_prob)
-            if arm == "rules_retry":
-                repaired += min_rules_repair(att, events[i], stack)
+                if rng_r.random() < retry_repro_prob:
+                    att = dict(primary)  # ρ：复现同一误差
+                else:
+                    att = build_attempt(events[i], alt_lists[i], draw_triple(rng_r), epsilon, swap_prob)
             if arm == "retry_oracle":
                 bad = is_mismatch(att, events[i])
-            else:  # retry_selfreport / rules_retry：修复后的环境自检
+            else:  # retry_selfreport：环境自检
                 bad = env_would_error(stack, att)
             attempts += 1
             if not bad:
@@ -237,15 +256,15 @@ def eps_star(curve: list[tuple[float, float]], criterion: float) -> tuple[float 
     return None, "right_censored"
 
 
-def maybe_plot(curve_rows: list[dict], out_dir: Path) -> list[str]:
+def maybe_plot(curve_rows: list[dict], out_dir: Path, rho: float) -> list[str]:
     try:
         import matplotlib.pyplot as plt  # type: ignore
     except Exception:
         return []
     out_files: list[str] = []
     labels = ["low", "medium", "high"]
-    colors = {"no_rules": "#888888", "retry_selfreport": "#f4a261", "retry_oracle": "#e63946",
-              "min_rules": "#2a9d8f", "rules_retry": "#1d3557"}
+    colors = {"no_rules": "#888888", "retry_selfreport": "#f4a261",
+              "retry_oracle": "#e63946", "min_rules": "#2a9d8f"}
     fig, axes = plt.subplots(1, 3, figsize=(15, 4.5), sharey=True)
     for ax, label in zip(axes, labels):
         for arm in ARMS:
@@ -259,8 +278,9 @@ def maybe_plot(curve_rows: list[dict], out_dir: Path) -> list[str]:
         ax.grid(alpha=0.25)
     axes[0].set_ylabel("success rate")
     axes[2].legend(fontsize=8)
+    fig.suptitle(f"rho = {rho}")
     fig.tight_layout()
-    p = out_dir / "five_arm_success_rate_vs_epsilon.png"
+    p = out_dir / f"four_arm_success_rate_vs_epsilon_rho{rho}.png"
     fig.savefig(p, dpi=160)
     plt.close(fig)
     out_files.append(str(p))
@@ -268,7 +288,7 @@ def maybe_plot(curve_rows: list[dict], out_dir: Path) -> list[str]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Five-arm paired error-injection experiment (rules vs retry)")
+    parser = argparse.ArgumentParser(description="Four-arm paired error-injection experiment (rules vs retry, with rho)")
     parser.add_argument("--samples-csv", type=Path,
                         default=Path("evidence/videocad/notes/cad_action_multimodal_samples.csv"))
     parser.add_argument("--per-label", type=int, default=30,
@@ -282,10 +302,12 @@ def main() -> None:
     parser.add_argument("--k", type=int, default=2, help="单步重试上限（超出即放弃该步）")
     parser.add_argument("--budget-ratio", type=float, default=0.2, help="预算 B = ceil(L*(1+r)) 的 r")
     parser.add_argument("--swap-prob", type=float, default=0.7, help="误差注入动作替换配比（其余为状态翻转）")
+    parser.add_argument("--retry-repro-prob", type=float, default=0.0,
+                        help="ρ：重试复现主尝试同一误差的概率（0=独立重抽，对重试最有利；1=重试无效）")
     parser.add_argument("--seed", type=int, default=20260226)
     parser.add_argument("--success-criterion", type=float, default=0.5, help="ε* 主判据（0.7 作敏感性分析）")
     parser.add_argument("--arms", type=str, default=",".join(ARMS))
-    parser.add_argument("--out-dir", type=Path, default=Path("tmp/five_arm_experiment"))
+    parser.add_argument("--out-dir", type=Path, default=Path("tmp/four_arm_experiment"))
     args = parser.parse_args()
 
     eps_values = sorted({float(x) for x in args.eps_list.split(",")})
@@ -342,7 +364,8 @@ def main() -> None:
                 for arm in arms:
                     r = run_arm(arm, chain["events"], plan, alt_cache[sid], epsilon=epsilon,
                                 k=args.k, budget=budget, chain_id=sid, rep=rep,
-                                seed=args.seed, swap_prob=args.swap_prob)
+                                seed=args.seed, swap_prob=args.swap_prob,
+                                retry_repro_prob=args.retry_repro_prob)
                     fail_idx = r.fail_step_idx if r.fail_step_idx is not None else L - 1
                     fail_ratio = (fail_idx + 1) / L if L else 0.0
                     key = (arm, label, epsilon)
@@ -405,27 +428,36 @@ def main() -> None:
         w = csv.DictWriter(f, fieldnames=list(eps_rows[0].keys()))
         w.writeheader(); w.writerows(eps_rows)
 
-    plots = maybe_plot(curve_rows, out_dir)
+    plots = maybe_plot(curve_rows, out_dir, args.retry_repro_prob)
 
     summary = {
-        "experiment": "five_arm_paired_error_injection (rules vs retry, plan v1 step 1)",
+        "experiment": "four_arm_paired_error_injection (rules vs retry with rho, plan v1 step 1 + 2nd-round amendment)",
         "design_notes": {
             "arms": {
                 "no_rules": "无任何约束/重试；环境错误即整链失败",
                 "retry_selfreport": "环境自检（栈下溢/finish失配，不读gt）触发重试，每步至多k次",
                 "retry_oracle": "attempt != gt event 即重试（完美失败检测），每步至多k次",
                 "min_rules": "栈一致性收束+非法关闭修正（沿用旧管线口径；含一处gt修复属oracle级信息，Section III申报）",
-                "rules_retry": "min_rules修复后再按环境自检重试（审查预警：min_rules修复后执行不抛错，本臂可能与min_rules退化同值）",
             },
+            "withdrawn_arm": ("rules_retry removed (F5=C): min_rules is a total repair policy: every "
+                              "violation it detects, it corrects, so execution never raises and a retry "
+                              "layer placed on top is inert by construction. Verified empirically "
+                              "(39,600/39,600 runs identical); four arms reported."),
             "success_definition": "无步放弃 + 无环境错误终止 + 结束时栈为空；不含任何gt判定（旧管线mismatch_rate阈值判定已移出成败路径，仅作分析量）",
-            "budget": "B = ceil(L*(1+r))，每次尝试（含未通过检定的重试）计1，规则检查不计；五臂同B",
+            "budget": "B = ceil(L*(1+r))，每次尝试（含未通过检定与ρ复现的重试）计1，规则检查不计；各臂同B",
             "retry_abandon": "单步k+1次尝试均未通过检定 → 该步放弃（不施加），链记abandoned，继续向下走",
+            "retry_error_correlation": {
+                "rho": args.retry_repro_prob,
+                "definition": "重试复现主尝试同一误差的概率；u_corr<ρ 复现，否则独立重抽（重试流确定性）",
+                "grid": [0.0, 0.5, 0.9],
+                "interpretation": "ρ=0 独立重试（对重试最有利，旧规格）；ρ→1 重试失效。真实GUI感知类误差ρ高、执行/时序类低。论文headline：重试何时够用取决于误差可重复性ρ。",
+            },
             "injection": {"per_event_probability": "epsilon", "action_swap_prob": args.swap_prob,
                            "status_flip_prob": round(1 - args.swap_prob, 6)},
             "rng": {
-                "primary": "sha256(seed,'inj',chain_id,rep) 预生成定长三元组数组；全臂、全ε档共用（corrupt判定为 u<epsilon，ε不参与抽样）",
-                "retry": "sha256(seed,'retry',chain_id,rep,step,attempt) 独立流",
-                "note": "无顺序推进母发生器；增删臂/调整循环顺序不改变任何已有结果",
+                "primary": "sha256(seed,'inj',chain_id,rep) 预生成定长三元组数组；全臂、全ε档共用（corrupt判定 u<epsilon，ε不参与抽样）",
+                "retry": "sha256(seed,'retry',chain_id,rep,step,attempt)：先抽ρ相关判定，再独立重抽三元组",
+                "note": "无顺序推进母发生器；增删臂/调整循环顺序/改ρ网格不改变任何已有结果",
             },
             "oracle_channels": [
                 "min_rules 修复①: 非法status恢复gt（本误差模型下为死代码）",
@@ -438,8 +470,8 @@ def main() -> None:
             "per_label": None if args.use_all_rows else args.per_label,
             "chains": len(chains), "replicates": args.replicates,
             "eps_list": eps_values, "k": args.k, "budget_ratio": args.budget_ratio,
-            "swap_prob": args.swap_prob, "seed": args.seed,
-            "success_criterion": args.success_criterion, "arms": arms,
+            "swap_prob": args.swap_prob, "retry_repro_prob": args.retry_repro_prob,
+            "seed": args.seed, "success_criterion": args.success_criterion, "arms": arms,
         },
         "chain_distribution": dict(Counter(c["complexity_label"] for c in chains)),
         "fail_reasons": {f"{k[0]}|{k[1]}|{k[2]}": v for k, v in reason_counter.items()},

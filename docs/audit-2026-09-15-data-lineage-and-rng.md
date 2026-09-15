@@ -12,7 +12,7 @@
 | F2 | 旧管线随机数由顺序推进母发生器导出，扩展/重排即静默破坏配对 | 🔴 | 新引擎确定性种子 + 预生成定长误差向量全臂共享 + 重试独立流 | ✅ 已处置 |
 | F3 | 规则臂读取 ground truth；且旧管线**全臂共用**的 mismatch-budget 判死也读 gt | 🟠 | 新引擎成败定义零 gt；oracle 通道清单申报；mismatch 仅作分析量 | ✅ 已处置 |
 | F4 | 三个未申报自由参数（0.12 阈值 / 0.7:0.3 配比 / 栈非空判死） | 🟡 | 全部 CLI 化 + summary.json 申报；0.12 判定移出成败路径 | ✅ 已处置 |
-| F5 | `rules_retry` 结构性退化为 `min_rules` 的同义词（代码可证 + 实证） | 🟠 | **待申请人决策**（预登记锁死前）：保留报冗余 / 改定义 / 移除 | ⏸ 待决策 |
+| F5 | `rules_retry` 结构性退化为 `min_rules` 的同义词（代码可证 + 实证） | 🟠 | **已决议：选 C**——四臂，退化验证降级为方法句（§二轮 2.1） | ✅ 已处置 |
 
 ---
 
@@ -130,9 +130,72 @@ success_rate 摘录（k=2, r=0.2, seed=20260226；全表见 tmp/dev_five_arm/cur
 # 旧管线 parity（4.1s，逐字节复现已入库输出）
 python3 evidence/videocad/scripts/run_h2_h3_mechanism_proxy.py --out-dir tmp/dev_repro_old
 
-# 新五臂引擎（开发集口径）
-python3 evidence/videocad/scripts/run_five_arm_experiment.py \
-  --per-label 30 --replicates 40 \
-  --eps-list 0,0.02,0.04,0.06,0.08,0.10,0.12,0.14,0.16,0.18,0.20 \
-  --k 2 --budget-ratio 0.2 --seed 20260226 --out-dir tmp/dev_five_arm
+# 四臂引擎（开发集口径；--retry-repro-prob 扫 ρ ∈ {0, 0.5, 0.9}）
+for rho in 0.0 0.5 0.9; do
+  python3 evidence/videocad/scripts/run_four_arm_experiment.py \
+    --per-label 30 --replicates 40 \
+    --eps-list 0,0.02,0.04,0.06,0.08,0.10,0.12,0.14,0.16,0.18,0.20 \
+    --k 2 --budget-ratio 0.2 --retry-repro-prob $rho --seed 20260226 \
+    --out-dir tmp/dev_four_arm_rho$(echo $rho | tr -d '.')
+done
 ```
+
+> 引擎原命名 `run_five_arm_experiment.py`（含退化臂），F5 决议 C 后更名为 `run_four_arm_experiment.py`。
+
+---
+
+## 二轮修正案（2026-09-15 下午，全量开跑前设计锁定）
+
+### 2.1 F5 决议：四臂，方法句锁死
+
+**决议：选 C**（移除 rules_retry，主实验四臂）。理由（申请人）：退化是定义的必然——min_rules 是全覆盖修复策略，"组合冗余"不是实证结论，写成 finding 会被审稿人误读为"规则与重试一般不互补"，反而成为扣分项；B（min_rules+retry_oracle）是真问题但属第二篇论文或 Discussion 一段，八页装不下。
+
+**论文 Section III 方法句（预登记锁死，verbatim）**：
+
+> `min_rules` is a *total* repair policy: every violation it detects, it corrects, so execution never raises and a retry layer placed on top is inert by construction. We verified this empirically (39,600/39,600 runs identical) and therefore report four arms rather than five.
+
+既有的 39,600/39,600 验证保留为方法注记，不进入 Results。上一版样稿的 Results C 段作废。
+引擎已更名 `run_four_arm_experiment.py`，`ARMS` 四元组，`design_notes.withdrawn_arm` 记录该句。
+
+### 2.2 F6：ρ 规格修正——重试的误差相关性（本修正案的核心）
+
+**责任归属**：方案 v1 表 B "with a fresh error draw at rate ε" 把重试设为最有利形态。算术验证：k=2 独立重抽下步失败概率 ε³（ε=0.04 时 6.4e-5），24 步链期望成功 ≈0.9985——与开发集观测 0.9958 吻合。**按旧规格主对比在开发集上已指向 null（0.996 vs 0.698），是规格缺陷而非重试的真实强度。**
+
+**修正**：新增申报参数 ρ（`--retry-repro-prob`）= 重试复现主尝试同一误差的概率。
+ρ=0 独立重抽（重试上界，最有利于重试）；ρ=1 重试完全无效。实现：重试流先抽 ρ 判定，复现或独立重抽均确定性。真实 GUI 感知类误差 ρ 高、执行/时序类低。
+
+**开发集 ρ 扫描**（90 链 × 11 ε × 40 rep × 4 臂 × 3 ρ = 475,200 runs，约 100s；no_rules/min_rules 跨 ρ 逐 run 一致 = 0.00e+00，配对无副作用已验证）：
+
+retry_oracle 的 ε\*（判据 0.5，插值；min_rules 对照：low/medium 在 0.20 网格顶仍 right_censored，high = 0.1112）：
+
+| ρ | oracle low | oracle medium | oracle high | 规则 vs oracle |
+|---|---|---|---|---|
+| 0.0 | 0.1997 | 0.1810 | 0.1663 | low/medium 规则不输（censored >0.20），high oracle 胜 |
+| 0.5 | 0.0923 | 0.0614 | 0.0356 | **三层规则全胜，Δε\* ≈ 0.08–0.16** |
+| 0.9 | 0.0364 | 0.0201 | 0.0145 | **三层规则全胜，Δε\* ≈ 0.10–0.19** |
+
+机制解读：ρ≥0.5 时重试收敛从几何级（ε³）退化为近线性（≈ερᵏ），预算 B 还被重试消耗放大——高 ε 处 oracle 因 budget_exhausted 提前出局（这正是共享预算约束的设计意图）。
+
+**论文 headline 由此从"规则赢/输"升级为"重试何时够用，取决于误差的可重复性 ρ"**——直接回应评审 3 的"可解释、可量化的误差—风险关系"，也是本文脱离"又一个消融实验"的增量所在。
+
+**决策门需按 ρ 重新表述（待申请人锁死，建议稿）**：
+
+```
+对每个 ρ ∈ {0, 0.5, 0.9}：Δε*(min_rules − retry_oracle) 的 95% CI（链级 bootstrap）
+若全部 ρ 的 CI 都跨 0 → 任何误差形态下规则都无增量 → 停止投稿
+若存在 ρ 区间 CI 全正 → 该区间即规则的价值域，论文主结论
+```
+
+即：决策门从"单次二元判定"变为"对 ρ 区间的存在性判定"。这比原门更弱（更易通过）但更诚实——它与修正后的论文主张一致。
+
+### 2.3 审计补笔 1（F1 加固）：ε=0 的实证值
+
+F1 的"ε=0 时成功率必为 1.0"依赖"gt 链全部良构（结束栈空）"这一前提。现直接给出实证：**已入库真实输出与新四臂引擎在 ε=0 处、全部臂 × 全部复杂度层，成功率 = 1.0000**（逐字节 parity 一致）。前提对开发集 90 链成立；确认集 600 链跑批时应将此检查加入 sanity（ε=0 行必须全为 1.0）。
+
+### 2.4 审计补笔 2（F3 独立成段）：旧 no_rules 基线也是 gt 基线
+
+`mismatch_rate > 0.12` 判死位于旧 `simulate_chain` 主循环，**no_rules 与 with_rules 同样命中**——它每步比较 obs 与 gt，累计失配率超阈值即判死。因此：
+
+- 旧管线的"无规则"基线**并非无信息基线**：它内置了一个 gt 失配预算监控。旧两臂输出的解释必须附带此限定。
+- 该判定同时是旧 with_rules 被压低约 0.15 的机理（见 F3 量化），两条通道（规则修复读 gt + 全臂判死读 gt）在旧管线里叠加。
+- 新引擎将成败定义清零 gt（判死移除，mismatch 仅作分析量），no_rules 才是真正无信息下界。跨口径引用旧输出时只能作"带 gt 监控的旧语义"下的对照。
