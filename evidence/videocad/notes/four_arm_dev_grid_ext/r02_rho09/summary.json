@@ -1,0 +1,130 @@
+{
+  "experiment": "four_arm_paired_error_injection (rules vs retry with rho, plan v1 step 1 + 2nd-round amendment)",
+  "design_notes": {
+    "arms": {
+      "no_rules": "无任何约束/重试；环境错误即整链失败",
+      "retry_selfreport": "环境自检（栈下溢/finish失配，不读gt）触发重试，每步至多k次",
+      "retry_oracle": "attempt != gt event 即重试（完美失败检测），每步至多k次",
+      "min_rules": "栈一致性收束+非法关闭修正（沿用旧管线口径；含一处gt修复属oracle级信息，Section III申报）"
+    },
+    "withdrawn_arm": "rules_retry removed (F5=C): min_rules is a total repair policy: every violation it detects, it corrects, so execution never raises and a retry layer placed on top is inert by construction. Verified empirically (39,600/39,600 runs identical); four arms reported.",
+    "success_definition": "无步放弃 + 无环境错误终止 + 结束时栈为空；不含任何gt判定（旧管线mismatch_rate阈值判定已移出成败路径，仅作分析量）",
+    "budget": "B = ceil(L*(1+r))，每次尝试（含未通过检定与ρ复现的重试）计1，规则检查不计；各臂同B",
+    "retry_abandon": "单步k+1次尝试均未通过检定 → 该步放弃（不施加），链记abandoned，继续向下走",
+    "retry_error_correlation": {
+      "rho": 0.9,
+      "definition": "重试复现主尝试同一误差的概率；u_corr<ρ 复现，否则独立重抽（重试流确定性）",
+      "grid": [
+        0.0,
+        0.5,
+        0.9
+      ],
+      "interpretation": "ρ=0 独立重试（对重试最有利，旧规格）；ρ→1 重试失效。真实GUI感知类误差ρ高、执行/时序类低。论文headline：重试何时够用取决于误差可重复性ρ。"
+    },
+    "injection": {
+      "per_event_probability": "epsilon",
+      "action_swap_prob": 0.7,
+      "status_flip_prob": 0.3
+    },
+    "rng": {
+      "primary": "sha256(seed,'inj',chain_id,rep) 预生成定长三元组数组；全臂、全ε档共用（corrupt判定 u<epsilon，ε不参与抽样）",
+      "retry": "sha256(seed,'retry',chain_id,rep,step,attempt)：先抽ρ相关判定，再独立重抽三元组",
+      "note": "无顺序推进母发生器；增删臂/调整循环顺序/改ρ网格不改变任何已有结果"
+    },
+    "oracle_channels": [
+      "min_rules 修复①: 非法status恢复gt（本误差模型下为死代码）",
+      "retry_oracle 判定: attempt与gt逐事件比较",
+      "（已移除）旧管线全臂共用的 cumulative mismatch-rate>threshold 判死"
+    ]
+  },
+  "inputs": {
+    "samples_csv": "evidence/videocad/notes/cad_action_multimodal_samples.csv",
+    "use_all_rows": false,
+    "per_label": 30,
+    "chains": 90,
+    "replicates": 40,
+    "eps_list": [
+      0.0,
+      0.02,
+      0.04,
+      0.06,
+      0.08,
+      0.1,
+      0.12,
+      0.14,
+      0.16,
+      0.18,
+      0.2,
+      0.22,
+      0.24,
+      0.26,
+      0.28,
+      0.3,
+      0.32,
+      0.34,
+      0.36,
+      0.38,
+      0.4,
+      0.42,
+      0.44,
+      0.46,
+      0.48,
+      0.5
+    ],
+    "k": 2,
+    "budget_ratio": 0.2,
+    "swap_prob": 0.7,
+    "retry_repro_prob": 0.9,
+    "seed": 20260226,
+    "success_criterion": 0.5,
+    "arms": [
+      "no_rules",
+      "retry_selfreport",
+      "retry_oracle",
+      "min_rules"
+    ]
+  },
+  "chain_distribution": {
+    "low": 30,
+    "medium": 30,
+    "high": 30
+  },
+  "fail_reasons": {
+    "low|no_rules|finish_mismatch": 24901,
+    "low|retry_selfreport|step_abandoned": 4095,
+    "low|retry_oracle|unexpected_finish_mismatch": 20698,
+    "low|retry_selfreport|budget_exhausted": 23481,
+    "low|retry_oracle|unexpected_stack_underflow": 4053,
+    "low|no_rules|stack_underflow": 2956,
+    "low|min_rules|non_empty_stack_at_end": 12584,
+    "low|retry_oracle|step_abandoned": 826,
+    "low|no_rules|non_empty_stack_at_end": 146,
+    "low|retry_selfreport|non_empty_stack_at_end": 196,
+    "medium|no_rules|finish_mismatch": 26157,
+    "medium|retry_selfreport|step_abandoned": 3813,
+    "medium|retry_oracle|unexpected_finish_mismatch": 24691,
+    "medium|min_rules|non_empty_stack_at_end": 14559,
+    "medium|retry_oracle|unexpected_stack_underflow": 2996,
+    "medium|retry_selfreport|budget_exhausted": 24952,
+    "medium|retry_oracle|step_abandoned": 460,
+    "medium|no_rules|stack_underflow": 2804,
+    "medium|no_rules|non_empty_stack_at_end": 54,
+    "medium|retry_selfreport|non_empty_stack_at_end": 73,
+    "high|no_rules|finish_mismatch": 27000,
+    "high|retry_selfreport|step_abandoned": 3699,
+    "high|retry_oracle|unexpected_finish_mismatch": 26146,
+    "high|no_rules|stack_underflow": 2564,
+    "high|retry_oracle|unexpected_stack_underflow": 2994,
+    "high|min_rules|non_empty_stack_at_end": 17906,
+    "high|no_rules|non_empty_stack_at_end": 30,
+    "high|retry_selfreport|non_empty_stack_at_end": 38,
+    "high|retry_oracle|step_abandoned": 244,
+    "high|retry_selfreport|budget_exhausted": 25761,
+    "low|retry_oracle|budget_exhausted": 1982,
+    "medium|retry_oracle|budget_exhausted": 543,
+    "high|retry_oracle|budget_exhausted": 42
+  },
+  "plots": [
+    "tmp/dev_ext_r02_rho09/four_arm_success_rate_vs_epsilon_rho0.9.png"
+  ]
+}
