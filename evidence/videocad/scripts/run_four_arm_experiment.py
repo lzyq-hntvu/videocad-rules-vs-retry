@@ -325,10 +325,13 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if args.use_all_rows:
+        # plumbing 修正（2026-09-16）："use all rows" 不再按 sample_group 过滤——
+        # 确认集清单的 sample_group 为 confirm_set_600，过滤会导致零行静默崩溃。
+        # 仅要求复杂度标签与动作链路径存在；对开发集 CSV（全为 random_stratified_overlap）行为不变。
         rows = []
         with args.samples_csv.open("r", encoding="utf-8", newline="") as f:
             for row in csv.DictReader(f):
-                if row.get("sample_group") == "random_stratified_overlap" and row.get("complexity_label"):
+                if row.get("complexity_label") and row.get("action_json_path"):
                     rows.append(row)
     else:
         rows = load_selected_chains(args.samples_csv, args.per_label)

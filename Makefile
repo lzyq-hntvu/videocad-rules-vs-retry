@@ -5,12 +5,15 @@
 PY = python3
 CONFIRM_CSV = evidence/videocad/notes/confirm_set_600.csv
 
-.PHONY: help confirm bootstrap-confirm bootstrap-dev dev-rho-sweep parity clean-tmp
+.PHONY: help confirm bootstrap-confirm bootstrap-dev dev-rho-sweep parity sample-confirm clean-tmp
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-18s %s\n", $$1, $$2}'
 
-confirm: ## 确认集全量跑批（需先完成步骤二抽样；用法: make confirm SEED=<确认集种子>）
+sample-confirm: ## 步骤二：确认集 600 链抽样（种子 20260916 已锁定）
+	$(PY) scripts/sample_confirm_set.py
+
+confirm: ## 确认集全量跑批（🔒 需 §3.2 批准栏填毕）（需先完成步骤二抽样；用法: make confirm SEED=<确认集种子>）
 	@test -n "$(SEED)" || { echo "缺少 SEED：make confirm SEED=<确认集专用种子>"; exit 1; }
 	./run_confirmation.sh $(SEED)
 
