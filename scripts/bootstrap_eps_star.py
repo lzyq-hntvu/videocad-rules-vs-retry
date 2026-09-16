@@ -156,8 +156,8 @@ def main() -> None:
                     family = "primary"
                 elif meta["budget_ratio"] == 0.2 and set_name in STRATA:
                     family = "secondary-9"
-                elif meta["budget_ratio"] == 0.5:
-                    family = "sensitivity-r05"
+                elif meta["budget_ratio"] == 0.5 and set_name in STRATA:
+                    family = "sensitivity-r05"  # 仅 9 个分层格；pooled @ r=0.5 为描述性（§3.2③）
                 else:
                     family = "descriptive"
 

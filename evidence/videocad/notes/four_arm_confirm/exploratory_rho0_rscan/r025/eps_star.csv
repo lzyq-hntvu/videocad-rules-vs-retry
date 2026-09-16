@@ -1,0 +1,7 @@
+arm,complexity_label,epsilon_star,censor_flag,criterion
+min_rules,low,0.2975,ok,0.5
+min_rules,medium,0.198228,ok,0.5
+min_rules,high,0.110256,ok,0.5
+retry_oracle,low,0.215631,ok,0.5
+retry_oracle,medium,0.205622,ok,0.5
+retry_oracle,high,0.186952,ok,0.5

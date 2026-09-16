@@ -5,7 +5,7 @@
 PY = python3
 CONFIRM_CSV = evidence/videocad/notes/confirm_set_600.csv
 
-.PHONY: help confirm bootstrap-confirm bootstrap-confirm-all bootstrap-dev dev-rho-sweep parity sample-confirm clean-tmp
+.PHONY: help confirm bootstrap-confirm bootstrap-confirm-all bootstrap-dev dev-rho-sweep parity sample-confirm supp-bundle clean-tmp
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-18s %s\n", $$1, $$2}'
@@ -49,6 +49,34 @@ parity: ## 旧管线逐字节复现验证
 	diff tmp/dev_repro_old/curve_summary.csv evidence/videocad/notes/h2_h3_proxy_experiment/curve_summary.csv
 	diff tmp/dev_repro_old/per_run_results.csv evidence/videocad/notes/h2_h3_proxy_experiment/per_run_results.csv
 	@echo "PARITY OK"
+
+supp-bundle: ## 打包论文补充材料（tmp/supplementary_bundle.zip）
+	@rm -f tmp/supplementary_bundle.zip
+	zip -q -r tmp/supplementary_bundle.zip \
+	  evidence/videocad/scripts/run_four_arm_experiment.py \
+	  evidence/videocad/scripts/run_h2_h3_mechanism_proxy.py \
+	  scripts/sample_confirm_set.py scripts/bootstrap_eps_star.py \
+	  scripts/eps_star_grid_summary.py scripts/analyze_fail_mix.py \
+	  run_confirmation.sh Makefile .gitignore \
+	  docs/experiment-plan-v1.md docs/audit-2026-09-15-data-lineage-and-rng.md \
+	  docs/paper-writing-notes.md docs/zenodo-submission-checklist.md \
+	  LICENSE README.md \
+	  evidence/videocad/notes/confirm_set_600.csv \
+	  evidence/videocad/notes/confirm_set_600_sampling_record.json \
+	  evidence/videocad/notes/four_arm_confirm/*/curve_summary.csv \
+	  evidence/videocad/notes/four_arm_confirm/*/eps_star.csv \
+	  evidence/videocad/notes/four_arm_confirm/*/fail_mix.csv \
+	  evidence/videocad/notes/four_arm_confirm/*/summary.json \
+	  evidence/videocad/notes/four_arm_confirm/exploratory_rho0_rscan/ \
+	  evidence/videocad/notes/four_arm_confirm/bootstrap_r02_results.csv \
+	  evidence/videocad/notes/four_arm_confirm/bootstrap_r05_results.csv \
+	  evidence/videocad/notes/four_arm_confirm/eps_star_range.csv \
+	  evidence/videocad/notes/four_arm_confirm/fig_eps_star_vs_rho.png \
+	  evidence/videocad/notes/four_arm_confirm/forest_r02.png \
+	  evidence/videocad/notes/four_arm_dev_grid_ext/bootstrap_results_dev.csv \
+	  evidence/videocad/notes/four_arm_dev_grid_ext/forest_r02_dev.png
+	@unzip -l tmp/supplementary_bundle.zip | tail -2
+	@echo "bundle ready: tmp/supplementary_bundle.zip （per_run 大表单独上传，见 zenodo-submission-checklist.md）"
 
 clean-tmp: ## 清理 tmp/（git 忽略的临时输出）
 	rm -rf tmp/*
