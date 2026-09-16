@@ -29,3 +29,7 @@ tmp/
 evidence/videocad/samples/dataverse/cad_imgs.zip
 evidence/videocad/samples/dataverse/action_json.zip
 evidence/videocad/notes/h1_proxy_experiment/cache_images/
+
+# 确认集 per-run 大表（约 100MB×6）：可一键再生成，不入库；
+# 论文补充材料走数据仓库（Zenodo/OSF），git 只留结论件（curve/eps_star/fail_mix/summary/plot）
+evidence/videocad/notes/four_arm_confirm/*/per_run_results.csv
