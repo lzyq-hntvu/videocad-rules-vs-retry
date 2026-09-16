@@ -5,7 +5,7 @@
 PY = python3
 CONFIRM_CSV = evidence/videocad/notes/confirm_set_600.csv
 
-.PHONY: help confirm bootstrap-confirm bootstrap-dev dev-rho-sweep parity sample-confirm clean-tmp
+.PHONY: help confirm bootstrap-confirm bootstrap-confirm-all bootstrap-dev dev-rho-sweep parity sample-confirm clean-tmp
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-18s %s\n", $$1, $$2}'
@@ -13,15 +13,25 @@ help:
 sample-confirm: ## 步骤二：确认集 600 链抽样（种子 20260916 已锁定）
 	$(PY) scripts/sample_confirm_set.py
 
-confirm: ## 确认集全量跑批（🔒 需 §3.2 批准栏填毕）（需先完成步骤二抽样；用法: make confirm SEED=<确认集种子>）
-	@test -n "$(SEED)" || { echo "缺少 SEED：make confirm SEED=<确认集专用种子>"; exit 1; }
-	./run_confirmation.sh $(SEED)
+confirm: ## 确认集全量跑批（种子 20261015 已在 §3.2 预登记；只运行一次）
+	./run_confirmation.sh
 
-bootstrap-confirm: ## 确认集 ε* bootstrap + 森林图（门 v2 判定输入）
+bootstrap-confirm: ## 确认集 ε* bootstrap：r=0.2 三目录（门 v2 判定输入，含 9 格 + 主格 + 对照量）
 	$(PY) scripts/bootstrap_eps_star.py --runs evidence/videocad/notes/four_arm_confirm/r02_rho00 \
 		evidence/videocad/notes/four_arm_confirm/r02_rho05 \
 		evidence/videocad/notes/four_arm_confirm/r02_rho09 \
+		--out-prefix evidence/videocad/notes/four_arm_confirm/bootstrap_r02 \
 		--plot evidence/videocad/notes/four_arm_confirm/forest_r02.png
+
+bootstrap-confirm-all: ## 确认集 bootstrap 全量（r=0.2 + r=0.5 敏感性族，供承重项正文报告）
+	$(PY) scripts/bootstrap_eps_star.py --runs evidence/videocad/notes/four_arm_confirm/r02_rho00 \
+		evidence/videocad/notes/four_arm_confirm/r02_rho05 \
+		evidence/videocad/notes/four_arm_confirm/r02_rho09 \
+		evidence/videocad/notes/four_arm_confirm/r05_rho00 \
+		evidence/videocad/notes/four_arm_confirm/r05_rho05 \
+		evidence/videocad/notes/four_arm_confirm/r05_rho09 \
+		--out-prefix evidence/videocad/notes/four_arm_confirm/bootstrap_all \
+		--plot evidence/videocad/notes/four_arm_confirm/forest_all.png
 
 bootstrap-dev: ## 开发集 bootstrap 验证（9 格 + 主格 + 森林图）
 	$(PY) scripts/bootstrap_eps_star.py --runs tmp/dev_ext_r02_rho00 tmp/dev_ext_r02_rho05 tmp/dev_ext_r02_rho09 \

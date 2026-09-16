@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
-# 确认集全量跑批 —— 门 v2 的判定输入。
+# 确认集全量跑批 —— 门 v2 的判定输入。只运行一次。
 #
 # 所有实验参数在本文件内硬编码。不要通过命令行临时改参数：
 # 改任何一处都会破坏预登记口径 / 配对设计（审计 docs/audit-2026-09-15-data-lineage-and-rng.md）。
 #
-# 前置（步骤二产物）：
-#   evidence/videocad/notes/confirm_set_600.csv   600 链确认集清单（含 200/200/200 分层，与开发集不相交）
-# 用法：
-#   ./run_confirmation.sh <CONFIRM_SEED>
-#   CONFIRM_SEED 为确认集专用种子（与开发集 20260226 不同），与抽样脚本种子一并写入论文补充材料。
+# 确认集注入种子 CONFIRM_RUN_SEED = 20261015 —— 预登记于审计 §3.2（2026-09-16 批准时锁死），
+# 不得以更换种子重跑。崩溃恢复：删除半成品输出目录后用同种子重跑（结果逐字节一致）。
 set -euo pipefail
 cd "$(dirname "$0")"
 
 CONFIRM_CSV="evidence/videocad/notes/confirm_set_600.csv"
-CONFIRM_SEED="${1:?用法: ./run_confirmation.sh <CONFIRM_SEED>（确认集专用种子，记录后入补充材料）}"
+CONFIRM_RUN_SEED=20261015
+DONE_MARKER="evidence/videocad/notes/four_arm_confirm/RUN_COMPLETE"
+
+if [ -f "$DONE_MARKER" ] && [ "${ALLOW_RERUN:-0}" != "1" ]; then
+  echo "阻断：$DONE_MARKER 已存在——确认集只运行一次（审计 §3.2 预登记）。"
+  echo "若确知前次为崩溃残留且已清除半成品，用 ALLOW_RERUN=1 ./run_confirmation.sh 同种子续跑。"
+  exit 1
+fi
 
 if [ ! -f "$CONFIRM_CSV" ]; then
-  echo "缺少 $CONFIRM_CSV —— 先完成步骤二抽样（600 链，200/200/200，与开发集不相交）。"
+  echo "缺少 $CONFIRM_CSV —— 先 make sample-confirm（600 链，200/200/200，与开发集不相交）。"
   exit 1
 fi
 
@@ -25,7 +29,7 @@ EPS_LIST="$(python3 -c "print(','.join(f'{i*0.02:.2f}' for i in range(26)))")"
 K=2                 # 单步重试上限（敏感性 {1,3} 另跑）
 SWAP_PROB=0.7       # 注入配比（70% 动作替换 / 30% 状态翻转）
 
-echo "== 确认集跑批: seed=$CONFIRM_SEED, grid=26pts(0..0.50), k=$K, swap=$SWAP_PROB, r∈{0.2,0.5}, ρ∈{0,0.5,0.9} =="
+echo "== 确认集跑批（一次）: seed=$CONFIRM_RUN_SEED, grid=26pts(0..0.50), k=$K, swap=$SWAP_PROB, r∈{0.2,0.5}, ρ∈{0,0.5,0.9} =="
 
 for R_RATIO in 0.2 0.5; do
   for RHO in 0.0 0.5 0.9; do
@@ -39,11 +43,11 @@ for R_RATIO in 0.2 0.5; do
       --eps-list "$EPS_LIST" \
       --k "$K" --budget-ratio "$R_RATIO" --swap-prob "$SWAP_PROB" \
       --retry-repro-prob "$RHO" \
-      --seed "$CONFIRM_SEED" \
+      --seed "$CONFIRM_RUN_SEED" \
       --out-dir "$out"
     python3 scripts/analyze_fail_mix.py "$out/per_run_results.csv" --out "$out/fail_mix.csv"
   done
 done
 
-echo "== 完成。六组输出在 evidence/videocad/notes/four_arm_confirm/，接着跑 bootstrap： =="
-echo "   python3 scripts/bootstrap_eps_star.py --runs evidence/videocad/notes/four_arm_confirm/r02_rho0* --plot evidence/videocad/notes/four_arm_confirm/forest_r02.png"
+date -Is > "$DONE_MARKER"
+echo "== 完成（marker: $DONE_MARKER）。接着：make bootstrap-confirm 判门 v2 =="
