@@ -1,0 +1,33 @@
+{
+  "analysis": "criterion-0.7 sensitivity recomputation (audit §3.2⑥ + §F4 preregistered sensitivity table; plan v1 表 3 判据列)",
+  "declarations": [
+    "敏感性族：既有确认集输出的重算（recompute, not re-run）——只读 four_arm_confirm/ 的 curve_summary.csv 与 per_run_results.csv，未修改/删除任何既有文件",
+    "非确认集主跑：确认集主跑种子 20261015 run-once 已封存，本分析未以任何种子重跑引擎",
+    "不影响门 v2 判定（门 v2 主检验唯一入口 = 0.5 判据主格 bootstrap，PASSED）",
+    "结果无论方向一律如实报告（含 ρ=0 全负、r=0.5 判据 0.7 下更负）"
+  ],
+  "criterion": 0.7,
+  "criterion_role": "sensitivity (主判据 0.5 不变——audit F4 / 方案 v1 表 F 条 2)",
+  "interpolation": "linear interpolation identical to engine run_four_arm_experiment.eps_star (imported, no fork); grid = 26 pts 0→0.50 step 0.02",
+  "pooled_definition": "equal-weight mean of the three strata success rates (200/200/200 equal allocation ⇒ identical to chain-level pooled)",
+  "curves": "4 arms × 3 strata + pooled, × 6 confirm cells (r∈{0.2,0.5} × ρ∈{0,0.5,0.9}) = 96 curves; Δε*(min_rules − retry_oracle) per cell for pooled + 3 strata",
+  "bootstrap": {
+    "unit": "chain",
+    "B": 9999,
+    "seed": 20261018,
+    "seed_declaration": "sensitivity-family bootstrap seed, distinct from 20260915 (gate v2 bootstrap), 20261015 (confirm run), 20261016 (ablation), 20261017 (k-sensitivity rerun)",
+    "ci_convention": "identical to scripts/bootstrap_eps_star.py (gate v2 implementation): lo=sorted[max(0,int(.025n))], hi=sorted[min(n-1,int(.975n)+1)], p=2·min(F̂(0),1−F̂(0))",
+    "note": "既有 bootstrap_replicates.csv 只存 0.5 判据的 Δε* 复抽值，无法从中重算 0.7 判据 CI；故 0.7 CI 由 per_run_results.csv 现算（同口径、新种子）"
+  },
+  "acceleration": "numpy 2.4.0 used for bootstrap aggregation only; interpolation itself pure Python (engine function); pandas 2.3.3 for CSV load",
+  "files": [
+    "criterion07_points.csv",
+    "criterion07_bootstrap.csv",
+    "criterion07_bootstrap_replicates.csv",
+    "recheck_20_curves.json",
+    "summary.json"
+  ],
+  "validation": {
+    "independent_recheck": "20/20 curves match (recheck_20_curves.json)"
+  }
+}

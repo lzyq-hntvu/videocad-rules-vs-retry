@@ -1,0 +1,13 @@
+arm,complexity_label,epsilon_star,censor_flag,criterion
+no_rules,low,0.02705,ok,0.5
+no_rules,medium,0.018059,ok,0.5
+no_rules,high,0.013351,ok,0.5
+retry_selfreport,low,0.042023,ok,0.5
+retry_selfreport,medium,0.028739,ok,0.5
+retry_selfreport,high,0.016849,ok,0.5
+retry_oracle,low,0.08708,ok,0.5
+retry_oracle,medium,0.061535,ok,0.5
+retry_oracle,high,0.036212,ok,0.5
+min_rules,low,0.315385,ok,0.5
+min_rules,medium,0.193425,ok,0.5
+min_rules,high,0.111364,ok,0.5

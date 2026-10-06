@@ -1,0 +1,793 @@
+{
+  "analysis": "swap_prob sensitivity family (audit §3.2⑦ amendment, 2026-09-17, declared before run; F4 preregistered sensitivity silently dropped from delivery, rerun on applicant decision)",
+  "declarations": [
+    "敏感性族、非确认集主跑、不影响门 v2 判定（PASSED 不变）；不进任何判定族",
+    "注入种子 20261020（新申报，不与 20260915/20260916/20261015-20261019 及 20261017 重用）；bootstrap 种子 20261021",
+    "种子 20261015（确认集主跑，run-once 封存）零触碰；four_arm_confirm/ 只读（0.7 参照数字提取）",
+    "所有数字来自真实运行；结果无论方向一律如实报告；运行后不改写事前预期",
+    "【运行后补记，见 day12 日志 §8/§9】本族分析脚本无增量落盘与进度输出：全部输出在 main() 末尾一次性写出（约 4 小时计算在完成前无可恢复中间产物）；申请人 2026-09-17 指令：下一敏感性族开跑前必须修（每格算完立即落盘 + 每格一行进度到 stdout）。本族已发生事实如实申报。",
+    "【运行后补记】monotonicity_pooled.csv 与 summary.monotonicity 原输出含每 (r,rho) 重复 5 次的同内容行（脚本遍历 bug，纯显示冗余，数值无差异），已去重为 6 行并同步修正脚本；bootstrap 各 CSV 与判定文件未受影响。",
+    "进度监测口径（申请人 2026-09-17 指令，供后续复查参照）：用 rchar 判断停滞会误报——脚本读一格→算数分钟→读下一格，格内计算期 rchar 平坦属正常；正确指标是 /proc/PID/stat 的 utime 增量。"
+  ],
+  "prediction_verbatim": "Prediction: the rule advantage decreases monotonically with swap_prob, since two of the three rules target structural/status violations. If Δε* at swap_prob = 0.95 remains within the CI of the 0.7 reference, the ordering claim in §VIII is supported; if it collapses toward the unconstrained baseline, the rule floor is conditional on the injected error composition and must be restated as such in Abstract, Results and Discussion.",
+  "design": {
+    "engine": "evidence/videocad/scripts/run_four_arm_experiment.py (authoritative, invoked verbatim via scripts/run_swap_sensitivity.sh)",
+    "runner": "evidence/videocad/scripts/run_swap_sensitivity.sh",
+    "chains": "confirm_set_600.csv --use-all-rows (600 chains, 200/200/200)",
+    "replicates": 20,
+    "k": 2,
+    "swap_prob": [
+      0.3,
+      0.5,
+      0.7,
+      0.9,
+      0.95
+    ],
+    "budget_ratio": [
+      0.2,
+      0.5
+    ],
+    "rho": [
+      0.0,
+      0.5,
+      0.9
+    ],
+    "eps_grid": "26 points 0→0.50 step 0.02 (engine default)",
+    "success_criterion": 0.5,
+    "seed": 20261020,
+    "runs_total": 37440000
+  },
+  "bootstrap": {
+    "unit": "chain",
+    "B": 9999,
+    "seed": 20261021,
+    "criterion": 0.5,
+    "pair": "min_rules − retry_oracle (main pair)",
+    "sets": "pooled + low/medium/high",
+    "ci_convention": "identical to scripts/bootstrap_eps_star.py (gate v2 implementation; functions imported unchanged)",
+    "zero_censoring_check": {
+      "eps_star_rows": 360,
+      "rows_expected": 360,
+      "n_non_ok_censor_flags": 30,
+      "bootstrap_cells": 120,
+      "bootstrap_pct_undefined_nonzero": 42,
+      "bootstrap_B_defined_all": false
+    },
+    "run_count_check": {
+      "runs_per_cell": 1248000,
+      "cells": 30,
+      "runs_total": 37440000,
+      "formula": "5 swap_prob x 6 (rho,r) cells x 1,248,000 = 37,440,000",
+      "verified_from_engine_summary_rows": true
+    }
+  },
+  "verdict_rule": {
+    "A": "Δε*(swap_prob=0.95) point within sealed confirm-set 0.7 reference CI (same r, ρ; pooled) → ordering claim supported",
+    "B": "collapse toward unconstrained baseline (Δε* ≤ 0 at 0.95) → rule floor restated as conditional on injected error composition in Abstract/Results/Discussion",
+    "neither": "neither pre-registered antecedent holds (0.95 point not within reference CI AND not collapsed) → report honestly per zero-fabrication discipline; pre-registered prediction sentence not rewritten",
+    "auxiliary_collapse_quantity": "min_rules − no_rules point Δε* at 0.95 (descriptive, pooled_eps_star recomputation, no bootstrap)",
+    "censored_cells": "Δε* undefined (min_rules right-censored: success rate never crosses the 0.5 criterion within the 26-point 0→0.50 grid); reported with lower bound Δε* > 0.50 − ε*(retry_oracle)"
+  },
+  "prediction_outcome": {
+    "counts": {
+      "A": 0,
+      "B": 0,
+      "neither": 6
+    },
+    "monotone_decreasing_holds_any": false,
+    "monotone_decreasing_holds_all_defined_cells": false,
+    "note": "auto-derived from verdict_rows/monotonicity; full narrative in logs/day12-swap_prob敏感性族.md"
+  },
+  "verdicts": [
+    {
+      "r": 0.2,
+      "rho": 0.0,
+      "stratum_set": "pooled",
+      "point_at_0.95": "",
+      "point_status_at_0.95": "undefined_right_censored",
+      "delta_lower_bound_if_censored": 0.322453,
+      "confirm_0.7_ref_ci": [
+        0.003774,
+        0.026018
+      ],
+      "within_0.7_ref_ci": false,
+      "collapse_toward_baseline_point_le_0": false,
+      "min_rules_minus_no_rules_at_0.95": "",
+      "verdict": "neither",
+      "verdict_note": "事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.5,
+      "stratum_set": "pooled",
+      "point_at_0.95": "",
+      "point_status_at_0.95": "undefined_right_censored",
+      "delta_lower_bound_if_censored": 0.443454,
+      "confirm_0.7_ref_ci": [
+        0.126632,
+        0.148221
+      ],
+      "within_0.7_ref_ci": false,
+      "collapse_toward_baseline_point_le_0": false,
+      "min_rules_minus_no_rules_at_0.95": "",
+      "verdict": "neither",
+      "verdict_note": "事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.9,
+      "stratum_set": "pooled",
+      "point_at_0.95": "",
+      "point_status_at_0.95": "undefined_right_censored",
+      "delta_lower_bound_if_censored": 0.480472,
+      "confirm_0.7_ref_ci": [
+        0.162112,
+        0.184894
+      ],
+      "within_0.7_ref_ci": false,
+      "collapse_toward_baseline_point_le_0": false,
+      "min_rules_minus_no_rules_at_0.95": "",
+      "verdict": "neither",
+      "verdict_note": "事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.0,
+      "stratum_set": "pooled",
+      "point_at_0.95": "",
+      "point_status_at_0.95": "undefined_right_censored",
+      "delta_lower_bound_if_censored": 0.250532,
+      "confirm_0.7_ref_ci": [
+        -0.067211,
+        -0.046865
+      ],
+      "within_0.7_ref_ci": false,
+      "collapse_toward_baseline_point_le_0": false,
+      "min_rules_minus_no_rules_at_0.95": "",
+      "verdict": "neither",
+      "verdict_note": "事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.5,
+      "stratum_set": "pooled",
+      "point_at_0.95": "",
+      "point_status_at_0.95": "undefined_right_censored",
+      "delta_lower_bound_if_censored": 0.443142,
+      "confirm_0.7_ref_ci": [
+        0.126208,
+        0.147755
+      ],
+      "within_0.7_ref_ci": false,
+      "collapse_toward_baseline_point_le_0": false,
+      "min_rules_minus_no_rules_at_0.95": "",
+      "verdict": "neither",
+      "verdict_note": "事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.9,
+      "stratum_set": "pooled",
+      "point_at_0.95": "",
+      "point_status_at_0.95": "undefined_right_censored",
+      "delta_lower_bound_if_censored": 0.480472,
+      "confirm_0.7_ref_ci": [
+        0.162112,
+        0.184894
+      ],
+      "within_0.7_ref_ci": false,
+      "collapse_toward_baseline_point_le_0": false,
+      "min_rules_minus_no_rules_at_0.95": "",
+      "verdict": "neither",
+      "verdict_note": "事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写"
+    }
+  ],
+  "monotonicity": [
+    {
+      "r": 0.2,
+      "rho": 0.0,
+      "trajectory_pooled": [
+        -0.096002,
+        -0.062336,
+        0.007342,
+        "",
+        ""
+      ],
+      "undefined_steps_right_censored": 2,
+      "step_diffs_defined_pairs": [
+        0.033666,
+        0.069678
+      ],
+      "monotone_nondecreasing_violated_by": [
+        0.033666,
+        0.069678
+      ],
+      "monotone_decreasing_holds": false,
+      "endpoint_change_defined_prefix": 0.103344
+    },
+    {
+      "r": 0.2,
+      "rho": 0.5,
+      "trajectory_pooled": [
+        0.024999,
+        0.058665,
+        0.128343,
+        "",
+        ""
+      ],
+      "undefined_steps_right_censored": 2,
+      "step_diffs_defined_pairs": [
+        0.033666,
+        0.069678
+      ],
+      "monotone_nondecreasing_violated_by": [
+        0.033666,
+        0.069678
+      ],
+      "monotone_decreasing_holds": false,
+      "endpoint_change_defined_prefix": 0.103344
+    },
+    {
+      "r": 0.2,
+      "rho": 0.9,
+      "trajectory_pooled": [
+        0.062016,
+        0.095682,
+        0.165361,
+        "",
+        ""
+      ],
+      "undefined_steps_right_censored": 2,
+      "step_diffs_defined_pairs": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_nondecreasing_violated_by": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_decreasing_holds": false,
+      "endpoint_change_defined_prefix": 0.103345
+    },
+    {
+      "r": 0.5,
+      "rho": 0.0,
+      "trajectory_pooled": [
+        -0.167924,
+        -0.134258,
+        -0.064579,
+        "",
+        ""
+      ],
+      "undefined_steps_right_censored": 2,
+      "step_diffs_defined_pairs": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_nondecreasing_violated_by": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_decreasing_holds": false,
+      "endpoint_change_defined_prefix": 0.103345
+    },
+    {
+      "r": 0.5,
+      "rho": 0.5,
+      "trajectory_pooled": [
+        0.024686,
+        0.058352,
+        0.128031,
+        "",
+        ""
+      ],
+      "undefined_steps_right_censored": 2,
+      "step_diffs_defined_pairs": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_nondecreasing_violated_by": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_decreasing_holds": false,
+      "endpoint_change_defined_prefix": 0.103345
+    },
+    {
+      "r": 0.5,
+      "rho": 0.9,
+      "trajectory_pooled": [
+        0.062016,
+        0.095682,
+        0.165361,
+        "",
+        ""
+      ],
+      "undefined_steps_right_censored": 2,
+      "step_diffs_defined_pairs": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_nondecreasing_violated_by": [
+        0.033666,
+        0.069679
+      ],
+      "monotone_decreasing_holds": false,
+      "endpoint_change_defined_prefix": 0.103345
+    }
+  ],
+  "comparison_family07_vs_confirm": [
+    {
+      "r": 0.2,
+      "rho": 0.0,
+      "stratum_set": "pooled",
+      "family_internal_0.7_point": 0.007342,
+      "confirm_0.7_point": 0.015192,
+      "diff_family_minus_confirm": -0.00785,
+      "confirm_ci": [
+        0.003774,
+        0.026018
+      ],
+      "family_ci": [
+        -0.003088,
+        0.019521
+      ],
+      "abs_diff": 0.00785,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.0,
+      "stratum_set": "low",
+      "family_internal_0.7_point": 0.119342,
+      "confirm_0.7_point": 0.102067,
+      "diff_family_minus_confirm": 0.017275,
+      "confirm_ci": [
+        0.083226,
+        0.125848
+      ],
+      "family_ci": [
+        0.090113,
+        0.14046
+      ],
+      "abs_diff": 0.017275,
+      "flag_gt_0.01": true,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.0,
+      "stratum_set": "medium",
+      "family_internal_0.7_point": 0.018393,
+      "confirm_0.7_point": 0.017173,
+      "diff_family_minus_confirm": 0.00122,
+      "confirm_ci": [
+        0.001095,
+        0.034142
+      ],
+      "family_ci": [
+        -8.3e-05,
+        0.038189
+      ],
+      "abs_diff": 0.00122,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.0,
+      "stratum_set": "high",
+      "family_internal_0.7_point": -0.063022,
+      "confirm_0.7_point": -0.055367,
+      "diff_family_minus_confirm": -0.007655,
+      "confirm_ci": [
+        -0.066731,
+        -0.043577
+      ],
+      "family_ci": [
+        -0.070531,
+        -0.052448
+      ],
+      "abs_diff": 0.007655,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.5,
+      "stratum_set": "pooled",
+      "family_internal_0.7_point": 0.128343,
+      "confirm_0.7_point": 0.137449,
+      "diff_family_minus_confirm": -0.009106,
+      "confirm_ci": [
+        0.126632,
+        0.148221
+      ],
+      "family_ci": [
+        0.118534,
+        0.139837
+      ],
+      "abs_diff": 0.009106,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.5,
+      "stratum_set": "low",
+      "family_internal_0.7_point": 0.226379,
+      "confirm_0.7_point": 0.212173,
+      "diff_family_minus_confirm": 0.014206,
+      "confirm_ci": [
+        0.194446,
+        0.235409
+      ],
+      "family_ci": [
+        0.197981,
+        0.247474
+      ],
+      "abs_diff": 0.014206,
+      "flag_gt_0.01": true,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.5,
+      "stratum_set": "medium",
+      "family_internal_0.7_point": 0.139546,
+      "confirm_0.7_point": 0.139964,
+      "diff_family_minus_confirm": -0.000418,
+      "confirm_ci": [
+        0.124005,
+        0.156284
+      ],
+      "family_ci": [
+        0.121565,
+        0.158857
+      ],
+      "abs_diff": 0.000418,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.5,
+      "stratum_set": "high",
+      "family_internal_0.7_point": 0.066237,
+      "confirm_0.7_point": 0.074504,
+      "diff_family_minus_confirm": -0.008267,
+      "confirm_ci": [
+        0.063511,
+        0.086153
+      ],
+      "family_ci": [
+        0.058934,
+        0.076429
+      ],
+      "abs_diff": 0.008267,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.9,
+      "stratum_set": "pooled",
+      "family_internal_0.7_point": 0.165361,
+      "confirm_0.7_point": 0.173832,
+      "diff_family_minus_confirm": -0.008471,
+      "confirm_ci": [
+        0.162112,
+        0.184894
+      ],
+      "family_ci": [
+        0.154517,
+        0.177753
+      ],
+      "abs_diff": 0.008471,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.9,
+      "stratum_set": "low",
+      "family_internal_0.7_point": 0.278871,
+      "confirm_0.7_point": 0.264234,
+      "diff_family_minus_confirm": 0.014637,
+      "confirm_ci": [
+        0.246272,
+        0.288107
+      ],
+      "family_ci": [
+        0.249435,
+        0.300346
+      ],
+      "abs_diff": 0.014637,
+      "flag_gt_0.01": true,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.9,
+      "stratum_set": "medium",
+      "family_internal_0.7_point": 0.178074,
+      "confirm_0.7_point": 0.176933,
+      "diff_family_minus_confirm": 0.001141,
+      "confirm_ci": [
+        0.160893,
+        0.193891
+      ],
+      "family_ci": [
+        0.159205,
+        0.19762
+      ],
+      "abs_diff": 0.001141,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.2,
+      "rho": 0.9,
+      "stratum_set": "high",
+      "family_internal_0.7_point": 0.088325,
+      "confirm_0.7_point": 0.095852,
+      "diff_family_minus_confirm": -0.007527,
+      "confirm_ci": [
+        0.084107,
+        0.107553
+      ],
+      "family_ci": [
+        0.080743,
+        0.099163
+      ],
+      "abs_diff": 0.007527,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.0,
+      "stratum_set": "pooled",
+      "family_internal_0.7_point": -0.064579,
+      "confirm_0.7_point": -0.056847,
+      "diff_family_minus_confirm": -0.007732,
+      "confirm_ci": [
+        -0.067211,
+        -0.046865
+      ],
+      "family_ci": [
+        -0.0742,
+        -0.05309
+      ],
+      "abs_diff": 0.007732,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.0,
+      "stratum_set": "low",
+      "family_internal_0.7_point": 0.025907,
+      "confirm_0.7_point": 0.008205,
+      "diff_family_minus_confirm": 0.017702,
+      "confirm_ci": [
+        -0.010249,
+        0.031917
+      ],
+      "family_ci": [
+        -0.002184,
+        0.047291
+      ],
+      "abs_diff": 0.017702,
+      "flag_gt_0.01": true,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.0,
+      "stratum_set": "medium",
+      "family_internal_0.7_point": -0.057459,
+      "confirm_0.7_point": -0.058954,
+      "diff_family_minus_confirm": 0.001495,
+      "confirm_ci": [
+        -0.074745,
+        -0.042131
+      ],
+      "family_ci": [
+        -0.075664,
+        -0.038526
+      ],
+      "abs_diff": 0.001495,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.0,
+      "stratum_set": "high",
+      "family_internal_0.7_point": -0.110126,
+      "confirm_0.7_point": -0.101552,
+      "diff_family_minus_confirm": -0.008574,
+      "confirm_ci": [
+        -0.11266,
+        -0.089966
+      ],
+      "family_ci": [
+        -0.11819,
+        -0.099659
+      ],
+      "abs_diff": 0.008574,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.5,
+      "stratum_set": "pooled",
+      "family_internal_0.7_point": 0.128031,
+      "confirm_0.7_point": 0.137005,
+      "diff_family_minus_confirm": -0.008974,
+      "confirm_ci": [
+        0.126208,
+        0.147755
+      ],
+      "family_ci": [
+        0.117963,
+        0.139572
+      ],
+      "abs_diff": 0.008974,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.5,
+      "stratum_set": "low",
+      "family_internal_0.7_point": 0.222723,
+      "confirm_0.7_point": 0.20855,
+      "diff_family_minus_confirm": 0.014173,
+      "confirm_ci": [
+        0.190957,
+        0.231697
+      ],
+      "family_ci": [
+        0.193776,
+        0.244045
+      ],
+      "abs_diff": 0.014173,
+      "flag_gt_0.01": true,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.5,
+      "stratum_set": "medium",
+      "family_internal_0.7_point": 0.139347,
+      "confirm_0.7_point": 0.13974,
+      "diff_family_minus_confirm": -0.000393,
+      "confirm_ci": [
+        0.123812,
+        0.156036
+      ],
+      "family_ci": [
+        0.120818,
+        0.158924
+      ],
+      "abs_diff": 0.000393,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.5,
+      "stratum_set": "high",
+      "family_internal_0.7_point": 0.066237,
+      "confirm_0.7_point": 0.074487,
+      "diff_family_minus_confirm": -0.00825,
+      "confirm_ci": [
+        0.063501,
+        0.086139
+      ],
+      "family_ci": [
+        0.058963,
+        0.076756
+      ],
+      "abs_diff": 0.00825,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.9,
+      "stratum_set": "pooled",
+      "family_internal_0.7_point": 0.165361,
+      "confirm_0.7_point": 0.173832,
+      "diff_family_minus_confirm": -0.008471,
+      "confirm_ci": [
+        0.162112,
+        0.184894
+      ],
+      "family_ci": [
+        0.154703,
+        0.177775
+      ],
+      "abs_diff": 0.008471,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.9,
+      "stratum_set": "low",
+      "family_internal_0.7_point": 0.278871,
+      "confirm_0.7_point": 0.264234,
+      "diff_family_minus_confirm": 0.014637,
+      "confirm_ci": [
+        0.246272,
+        0.288107
+      ],
+      "family_ci": [
+        0.25013,
+        0.300487
+      ],
+      "abs_diff": 0.014637,
+      "flag_gt_0.01": true,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.9,
+      "stratum_set": "medium",
+      "family_internal_0.7_point": 0.178074,
+      "confirm_0.7_point": 0.176933,
+      "diff_family_minus_confirm": 0.001141,
+      "confirm_ci": [
+        0.160893,
+        0.193891
+      ],
+      "family_ci": [
+        0.159362,
+        0.198163
+      ],
+      "abs_diff": 0.001141,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    },
+    {
+      "r": 0.5,
+      "rho": 0.9,
+      "stratum_set": "high",
+      "family_internal_0.7_point": 0.088325,
+      "confirm_0.7_point": 0.095852,
+      "diff_family_minus_confirm": -0.007527,
+      "confirm_ci": [
+        0.084107,
+        0.107553
+      ],
+      "family_ci": [
+        0.080775,
+        0.099025
+      ],
+      "abs_diff": 0.007527,
+      "flag_gt_0.01": false,
+      "magnitude_reference": "k 族先例：rho=0.9 pooled 族内 vs 确认集差 ~0.005"
+    }
+  ],
+  "files": [
+    "sp{0.3,0.5,0.7,0.9,0.95}_r{0.2,0.5}_rho{0,0.5,0.9}/{curve_summary.csv,eps_star.csv,summary.json,cell log}",
+    "bootstrap_swap_r02.csv",
+    "bootstrap_swap_r02_replicates.csv",
+    "bootstrap_swap_r05.csv",
+    "bootstrap_swap_r05_replicates.csv",
+    "headline_pooled.csv",
+    "aux_min_rules_minus_no_rules.csv",
+    "comparison_family07_vs_confirm.csv",
+    "monotonicity_pooled.csv",
+    "verdict_AB.csv",
+    "eps_star_censor_check.csv",
+    "summary.json",
+    "validation_swap_path.json"
+  ],
+  "per_run_note": "per_run_results.csv (~1.1 GB x 30) kept in tmp/sensitivity_swap/, regenerable byte-identically via run_swap_sensitivity.sh"
+}

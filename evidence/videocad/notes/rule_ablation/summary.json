@@ -1,0 +1,280 @@
+{
+  "experiment": "rule_type_ablation (plan v1 step 3, table D/E; 9 ablation conditions + no_rules reference arm)",
+  "script": "scripts/run_rule_ablation.py",
+  "engine_source": {
+    "file": "evidence/videocad/scripts/run_four_arm_experiment.py",
+    "git_sha": "b42ce3dddf4a30833832b77ccae94b93c8c8b888",
+    "reuse_mode": "import (not copied): seed_from/draw_triple/build_attempt/is_mismatch/execute_attempt/min_rules_repair/run_arm/eps_star/VALID_STATUS + load_events; both source modules main-guarded, import side-effect free"
+  },
+  "inputs": {
+    "samples_csv": "/home/huyuming/projects/videocad-rules-vs-retry/evidence/videocad/notes/confirm_set_600.csv",
+    "use_all_rows": true,
+    "chains": 600,
+    "replicates": 20,
+    "eps_list": [
+      0.02,
+      0.05,
+      0.08,
+      0.1,
+      0.14,
+      0.18,
+      0.22,
+      0.26,
+      0.3,
+      0.34
+    ],
+    "budget_ratio": 0.2,
+    "swap_prob": 0.7,
+    "seed": 20261016,
+    "success_criterion": 0.5,
+    "conditions": {
+      "no_rules": [],
+      "only_legal_set": [
+        "legal_set"
+      ],
+      "only_order": [
+        "order"
+      ],
+      "only_consistency": [
+        "consistency"
+      ],
+      "only_coordinate": [
+        "coordinate"
+      ],
+      "loo_no_legal_set": [
+        "order",
+        "consistency",
+        "coordinate"
+      ],
+      "loo_no_order": [
+        "legal_set",
+        "consistency",
+        "coordinate"
+      ],
+      "loo_no_consistency": [
+        "legal_set",
+        "order",
+        "coordinate"
+      ],
+      "loo_no_coordinate": [
+        "legal_set",
+        "order",
+        "consistency"
+      ],
+      "full": [
+        "legal_set",
+        "order",
+        "consistency",
+        "coordinate"
+      ]
+    },
+    "vocab_size": 6,
+    "vocab_sorted": [
+      "Drawing Arc",
+      "Drawing Circle",
+      "Drawing Curve",
+      "Drawing Line",
+      "Drawing Sketch",
+      "Performing Extrusion"
+    ]
+  },
+  "no_retry": {
+    "declared": "全部 10 条件均为无重试修复条件；ρ/k 不适用（无重试流）。",
+    "budget": "B = ceil(L*(1+0.2)) 与引擎同口径；无重试下 attempts=L ≤ B，预算恒不约束。"
+  },
+  "seed_rationale": {
+    "seed": 20261016,
+    "confirm_main_seed": 20261015,
+    "rationale": "主确认集种子 20261015 已预登记且只运行一次，不得复用；本消融为新实验，取相邻次日 20261016 保持血缘可读并避免任何'重跑确认集'的解释空间；F2 配对设计下换种子仅等价于独立重复抽样。"
+  },
+  "grid": {
+    "primary": [
+      0.02,
+      0.05,
+      0.08
+    ],
+    "extended_exploratory": [
+      0.1,
+      0.14,
+      0.18,
+      0.22,
+      0.26,
+      0.3,
+      0.34
+    ],
+    "rationale": "主口径 3 点为 plan v1 表 D/E 预登记点（plan v1 时代依据的是被 F1 撤回的伪造 JSON 世界观 ε*≤0.08——假 JSON 世界观第三次咬伤的受害者）；为保预登记一致性保留并如实报（其上 Δε* 预计全删失，报告为 censored）。扩展区按 audit §3.1 先例（网格上限须盖住真实 ε*：开发集 min_rules 分层 ε* 最高 0.3259 → 顶端 0.34 防删失），用户 2026-09-16 批准。"
+  },
+  "rule_class_mapping": {
+    "legal_set": {
+      "engine_primitives": [
+        "R1 状态字母表合法集修复（读 gt，oracle 通道申报；本误差模型下死代码）",
+        "R3 非法关闭修正：空栈 finished → started（状态条件合法集，不读 gt）"
+      ],
+      "proposal_basis": "动作类型合法集约束 / 限制非法状态扩散（1.3-科学问题 §1.3.4；申报书正文总稿-V1.md:111）"
+    },
+    "order": {
+      "engine_primitives": [],
+      "proposal_basis": "局部顺序约束（1.3-科学问题 §1.3.4；研究内容 WP1-WP2-WP3:76）",
+      "note": "符号链上无独立修复原语：LIFO 关闭次序纪律内嵌于一致性收束的栈顶投影，不可分离为独立可开关代码路径 → only_order ≡ no_rules、loo_no_order ≡ full（构造性退化，如实报告为范围发现）。"
+    },
+    "consistency": {
+      "engine_primitives": [
+        "R2 栈一致性收束：finish 投影到栈顶（状态前后条件，不读 gt）"
+      ],
+      "proposal_basis": "状态一致性约束 / 状态前后条件 / 状态机一致性（研究内容:76；1.3 §1.3.4）"
+    },
+    "coordinate": {
+      "engine_primitives": [],
+      "proposal_basis": "坐标/落点合法性约束（1.3 §1.3.4；申报书正文总稿:111）",
+      "note": "坐标是图像侧概念，符号动作链上无对应物 → only_coordinate ≡ no_rules、loo_no_coordinate ≡ full（vacuous，如实报告）。"
+    },
+    "oracle_channels": [
+      "legal_set R1：非法 status 恢复 gt（本误差模型下死代码；沿引引擎 Section III 申报口径）"
+    ]
+  },
+  "metric_definitions": {
+    "success": "无环境错误终止 + 结束栈空（无重试 → 无步放弃）；零 gt，与引擎 F3 口径一致",
+    "delta_success_rate": "single 方向 = rate(only_X) − rate(no_rules)；loo 方向 = rate(loo_no_X) − rate(full)；full_vs_no_rules 为补充口径",
+    "delta_eps_star": "ε* 用引擎导入的同一 eps_star 线性插值（判据 0.5）；分层（low/medium/high）+ pooled；两档网格各报；删失如实标",
+    "fail_position": "首次失败归一化步位 (fail_step_idx+1)/L，仅统计失败 run（成功 run 不进入 mean/median）；Δ = 条件 − 参照",
+    "fail_position_ks_vs_no_rules": {
+      "status": "skipped",
+      "reason": "表 E 的 Δ失败位置以 mean/median 落实已足够支撑图 4 与正文表述；KS 为分布级补充检验，不进入任何预登记判定，为控制本步实现面与运行面按规格声明省略。"
+    },
+    "coverage": "每类规则在每条件中被触发的步比例 = 触发步数 / 总步数（跨该条件全部 run 求和）；触发 = 该步修复函数改变了 attempt（含阻止错误：R2 投影与 R3 转 started 均同时改变尝试并阻止相应环境错误，二者同事件计一次）",
+    "contraction": {
+      "definition": "触发步上候选空间被压缩的比例 = 1 − |约束后可行集| / |约束前可行集|（按规则所约束的维度计）",
+      "consistency": "动作维度：finish 尝试的候选动作集 = 全词表（|V| 个，含被注入替换后的任意动作）→ 投影到栈顶 1 个 → 收缩比 = 1 − 1/|V|（|V| = 全局动作词表，逐触发步恒定）",
+      "legal_set": "状态维度：空栈态候选状态集 {started, finished} → 合法集 {started} → 收缩比 = 0.5（R1 若触发同属状态维度，同为 0.5；实测 R1 触发数见 r1_total_fires，预期 0）",
+      "order/coordinate": "vacuous（无修复原语，候选空间未被约束）→ 留空",
+      "note": "引擎候选集是隐式的，以上为本次消融的操作化定义，随 summary.json 申报。"
+    }
+  },
+  "run_counts": {
+    "expected": 1200000,
+    "formula": "10 conditions x 600 chains x 10 eps x 20 reps",
+    "actual": 1200000,
+    "match": true
+  },
+  "validation": {
+    "a_full_equals_engine_min_rules": {
+      "compared": 150,
+      "mismatches": 0,
+      "fields": [
+        "success",
+        "fail_reason",
+        "attempts_made",
+        "mismatch_count",
+        "repaired_events"
+      ]
+    },
+    "b_no_rules_equals_engine": {
+      "compared": 150,
+      "mismatches": 0,
+      "fields": [
+        "success",
+        "fail_reason",
+        "attempts_made",
+        "mismatch_count",
+        "repaired_events"
+      ]
+    },
+    "c_monotonicity_full_ge_loo": {
+      "checked_cells": 40,
+      "violations": []
+    },
+    "d_vacuous_classes": [
+      "order",
+      "coordinate"
+    ],
+    "d_degeneracy_empirical": {
+      "only_order_==_no_rules": true,
+      "only_coordinate_==_no_rules": true,
+      "loo_no_order_==_full": true,
+      "loo_no_coordinate_==_full": true
+    },
+    "e_run_count": {
+      "expected": 1200000,
+      "actual": 1200000,
+      "match": true
+    },
+    "r1_total_fires": 0,
+    "r3_total_fires": 268834
+  },
+  "chain_distribution": {
+    "low": 200,
+    "medium": 200,
+    "high": 200
+  },
+  "fail_reasons": {
+    "high|full|non_empty_stack_at_end": 20603,
+    "high|loo_no_consistency|non_empty_stack_at_end": 100,
+    "high|loo_no_consistency|unexpected_finish_mismatch": 38601,
+    "high|loo_no_coordinate|non_empty_stack_at_end": 20603,
+    "high|loo_no_legal_set|non_empty_stack_at_end": 10903,
+    "high|loo_no_legal_set|unexpected_stack_underflow": 20664,
+    "high|loo_no_order|non_empty_stack_at_end": 20603,
+    "high|no_rules|finish_mismatch": 36257,
+    "high|no_rules|non_empty_stack_at_end": 98,
+    "high|no_rules|stack_underflow": 2436,
+    "high|only_consistency|non_empty_stack_at_end": 10903,
+    "high|only_consistency|unexpected_stack_underflow": 20664,
+    "high|only_coordinate|non_empty_stack_at_end": 98,
+    "high|only_coordinate|unexpected_finish_mismatch": 36257,
+    "high|only_coordinate|unexpected_stack_underflow": 2436,
+    "high|only_legal_set|non_empty_stack_at_end": 100,
+    "high|only_legal_set|unexpected_finish_mismatch": 38601,
+    "high|only_order|non_empty_stack_at_end": 98,
+    "high|only_order|unexpected_finish_mismatch": 36257,
+    "high|only_order|unexpected_stack_underflow": 2436,
+    "low|full|non_empty_stack_at_end": 13959,
+    "low|loo_no_consistency|non_empty_stack_at_end": 388,
+    "low|loo_no_consistency|unexpected_finish_mismatch": 35019,
+    "low|loo_no_coordinate|non_empty_stack_at_end": 13959,
+    "low|loo_no_legal_set|non_empty_stack_at_end": 9785,
+    "low|loo_no_legal_set|unexpected_stack_underflow": 14365,
+    "low|loo_no_order|non_empty_stack_at_end": 13959,
+    "low|no_rules|finish_mismatch": 32601,
+    "low|no_rules|non_empty_stack_at_end": 356,
+    "low|no_rules|stack_underflow": 2745,
+    "low|only_consistency|non_empty_stack_at_end": 9785,
+    "low|only_consistency|unexpected_stack_underflow": 14365,
+    "low|only_coordinate|non_empty_stack_at_end": 356,
+    "low|only_coordinate|unexpected_finish_mismatch": 32601,
+    "low|only_coordinate|unexpected_stack_underflow": 2745,
+    "low|only_legal_set|non_empty_stack_at_end": 388,
+    "low|only_legal_set|unexpected_finish_mismatch": 35019,
+    "low|only_order|non_empty_stack_at_end": 356,
+    "low|only_order|unexpected_finish_mismatch": 32601,
+    "low|only_order|unexpected_stack_underflow": 2745,
+    "medium|full|non_empty_stack_at_end": 16833,
+    "medium|loo_no_consistency|non_empty_stack_at_end": 213,
+    "medium|loo_no_consistency|unexpected_finish_mismatch": 36980,
+    "medium|loo_no_coordinate|non_empty_stack_at_end": 16833,
+    "medium|loo_no_legal_set|non_empty_stack_at_end": 10679,
+    "medium|loo_no_legal_set|unexpected_stack_underflow": 16702,
+    "medium|loo_no_order|non_empty_stack_at_end": 16833,
+    "medium|no_rules|finish_mismatch": 34564,
+    "medium|no_rules|non_empty_stack_at_end": 205,
+    "medium|no_rules|stack_underflow": 2593,
+    "medium|only_consistency|non_empty_stack_at_end": 10679,
+    "medium|only_consistency|unexpected_stack_underflow": 16702,
+    "medium|only_coordinate|non_empty_stack_at_end": 205,
+    "medium|only_coordinate|unexpected_finish_mismatch": 34564,
+    "medium|only_coordinate|unexpected_stack_underflow": 2593,
+    "medium|only_legal_set|non_empty_stack_at_end": 213,
+    "medium|only_legal_set|unexpected_finish_mismatch": 36980,
+    "medium|only_order|non_empty_stack_at_end": 205,
+    "medium|only_order|unexpected_finish_mismatch": 34564,
+    "medium|only_order|unexpected_stack_underflow": 2593
+  },
+  "elapsed_seconds": 60.7,
+  "outputs": [
+    "per_run_results.csv",
+    "curve_summary.csv",
+    "eps_star.csv",
+    "ablation_effects.csv",
+    "coverage_contraction.csv",
+    "summary.json"
+  ]
+}

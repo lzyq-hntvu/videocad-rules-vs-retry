@@ -1,0 +1,147 @@
+{
+  "method": "independent reimplementation of linear interpolation (no import of engine eps_star); 20 curves sampled with fixed RNG seed 7; pooled curve = equal-weight mean of the three strata rates",
+  "n": 20,
+  "all_match": true,
+  "curves": [
+    {
+      "curve": "r02_rho09|retry_oracle|low",
+      "independent": 0.016985,
+      "script": "0.016985",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho05|min_rules|pooled",
+      "independent": 0.069261,
+      "script": "0.069261",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho00|min_rules|medium",
+      "independent": 0.071366,
+      "script": "0.071366",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho09|min_rules|pooled",
+      "independent": 0.069261,
+      "script": "0.069261",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|no_rules|medium",
+      "independent": 0.010729,
+      "script": "0.010729",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|retry_oracle|low",
+      "independent": 0.157385,
+      "script": "0.157385",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho05|no_rules|high",
+      "independent": 0.007887,
+      "script": "0.007887",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|retry_selfreport|high",
+      "independent": 0.011707,
+      "script": "0.011707",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho09|retry_selfreport|medium",
+      "independent": 0.011439,
+      "script": "0.011439",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho05|retry_oracle|medium",
+      "independent": 0.032515,
+      "script": "0.032515",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|no_rules|pooled",
+      "independent": 0.010375,
+      "script": "0.010375",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho05|min_rules|high",
+      "independent": 0.042099,
+      "script": "0.042099",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho05|retry_oracle|pooled",
+      "independent": 0.029446,
+      "script": "0.029446",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|no_rules|high",
+      "independent": 0.007887,
+      "script": "0.007887",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|retry_oracle|pooled",
+      "independent": 0.149238,
+      "script": "0.149238",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho00|no_rules|pooled",
+      "independent": 0.010375,
+      "script": "0.010375",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho00|no_rules|low",
+      "independent": 0.014458,
+      "script": "0.014458",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho00|retry_oracle|high",
+      "independent": 0.141354,
+      "script": "0.141354",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r02_rho05|retry_selfreport|medium",
+      "independent": 0.015056,
+      "script": "0.015056",
+      "flag": "ok",
+      "match": true
+    },
+    {
+      "curve": "r05_rho05|no_rules|medium",
+      "independent": 0.010729,
+      "script": "0.010729",
+      "flag": "ok",
+      "match": true
+    }
+  ]
+}

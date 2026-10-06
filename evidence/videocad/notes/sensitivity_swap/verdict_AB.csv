@@ -1,0 +1,7 @@
+r,rho,stratum_set,point_at_0.95,point_status_at_0.95,delta_lower_bound_if_censored,confirm_0.7_ref_ci,within_0.7_ref_ci,collapse_toward_baseline_point_le_0,min_rules_minus_no_rules_at_0.95,verdict,verdict_note
+0.2,0.0,pooled,,undefined_right_censored,0.322453,"[0.003774, 0.026018]",False,False,,neither,事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写
+0.2,0.5,pooled,,undefined_right_censored,0.443454,"[0.126632, 0.148221]",False,False,,neither,事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写
+0.2,0.9,pooled,,undefined_right_censored,0.480472,"[0.162112, 0.184894]",False,False,,neither,事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写
+0.5,0.0,pooled,,undefined_right_censored,0.250532,"[-0.067211, -0.046865]",False,False,,neither,事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写
+0.5,0.5,pooled,,undefined_right_censored,0.443142,"[0.126208, 0.147755]",False,False,,neither,事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写
+0.5,0.9,pooled,,undefined_right_censored,0.480472,"[0.162112, 0.184894]",False,False,,neither,事前两种形态的前提均不成立：0.95 点不在 0.7 参照 CI 内，但也未塌向无约束基线（方向反转：Δε* 高于参照/右删失于网格顶之上）——按零编造纪律如实报告，事前预期句不得改写

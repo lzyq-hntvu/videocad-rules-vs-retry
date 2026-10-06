@@ -296,6 +296,36 @@ gate v2 设计批准人：胡宇明（申请人亲签）
 （崩溃恢复可用同种子重跑——同种子结果逐字节一致，不破坏本条款；
   任何换种子重跑即视为解封后新实验，前次结果作废并须重新走批准流程）。
 ```
+
+**⑥ 混合效应模型的定位修正案（2026-09-16 申请人批准追加；确认集结果已知后补入，特此声明）**
+
+方案 v1（§主模型，`success ~ arm × ε × stratum + (1 | chain)`）原将混合效应 logistic 的
+`min_rules` vs `retry_oracle` 固定效应列为**主检验**。门 v2（本节 ①）已将其替换为
+链级 bootstrap Δε* 判定。本修正案将混合效应模型的地位正式定为：
+
+- **描述性与异质性分析**：报告 `arm × ε × stratum` 固定效应（odds ratio + Δε* 绝对值）
+  与链随机截距的方差分量；用途是刻画异质性结构（复杂度层间、ε 依赖是否随臂变化），
+  **不重新判定主问题**——主检验唯一入口是本节 ① 的 bootstrap 门 v2，其判定（PASSED）
+  不因混合模型系数方向或显著性而改变或复核。
+- **旧口径存档冲突声明**：方案 v1 表 2"混合效应模型系数表"仍交付，但表头/正文表述
+  必须注明 descriptive，不得使用"主检验/显著即支持 H"类判定语言。
+- **可执行性**（申请人 2026-09-16 确认三项均可执行且属预登记，不属"实现为空"）：
+  0.7 判据敏感性直接由 `curve_summary.csv` 重算；k ∈ {1,3} 敏感性重跑引擎；
+  混合效应模型若算力受限可在**声明子集**上拟合（如 r=0.2 主对照、按层抽链），
+  写明缩减理由与适用范围。三项结果无论方向一律如实报告。
+- **排序原则**：追加时确认集结果已在手；为避免事后选择，模型规格完全沿用方案 v1
+  原文（§主模型表），不新增交互项、不剔除离群格。
+
+**⑦ swap_prob 敏感性族（2026-09-17 申请人批准追加；本条写于该族运行之前）**
+
+依据：audit F4 参数集本已预登记 swap_prob 敏感性（"注入配比 70% 替换 / 30% 翻转 `--swap-prob 0.7` CLI 化 + 申报"），k 族与 0.7 判据族交付后此列静默缩水——申请人 2026-09-17 决断补跑，不接受"计划有、交付无"第六次。与 ⑥ 同构：新实验、新种子、dated amendment、确认集结果已知后追加，**不触碰种子 20261015 的 run-once**。
+
+- **网格（运行前申报，须触及高端）**：swap_prob ∈ {0.3, 0.5, 0.7, 0.9, 0.95}；**0.7 为参照点而非端点**（与确认集主跑同值）。其余参数与 k 族同构：confirm_set_600 --use-all-rows、四臂、判据 0.5、26 点网格 0→0.50、ρ ∈ {0, 0.5, 0.9}、r ∈ {0.2, 0.5}、k=2、replicates 20、注入种子 **20261020**（新申报，不与任何既有种子重用）、bootstrap 种子 **20261021**。
+- **事前预期方向（可证伪性声明，逐字）**：
+  "Prediction: the rule advantage decreases monotonically with swap_prob, since two of the three rules target structural/status violations. If Δε* at swap_prob = 0.95 remains within the CI of the 0.7 reference, the ordering claim in §VIII is supported; if it collapses toward the unconstrained baseline, the rule floor is conditional on the injected error composition and must be restated as such in Abstract, Results and Discussion."
+  依据：min_rules 三条规则中至少两条（栈一致性收束 R2、非法关闭修正 R3）针对状态/结构错误，swap（动作替换）概率升高意味着更多结构类错误，规则优势预期随之衰减；最有信息量的点在 swap_prob→1，不在中段。
+- **两种结论形态均已事前绑定处置**（见上逐字句），运行后不得改写预期方向。
+- **不进任何判定族**：本族为敏感性族，不影响门 v2 判定（PASSED 不变）。
 ### 3.3 C：budget_exhausted 归因——r 敏感性是承重项
 
 按 ρ × ε 分解 oracle 失败原因（scripts/analyze_fail_mix.py，全表见 fail_mix.csv）。crossing 点附近 oracle 失败中 budget_exhausted 的占比：

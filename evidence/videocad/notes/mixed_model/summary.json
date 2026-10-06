@@ -1,0 +1,209 @@
+{
+  "analysis": "mixed_effects_logistic (descriptive & heterogeneity; audit §3.2⑥)",
+  "positioning_verbatim_zh": "描述性与异质性分析：刻画异质性结构（复杂度层间、ε 依赖是否随臂变化），不重新判定主问题——主检验唯一入口是门 v2 的 bootstrap 判定（PASSED），不因混合模型系数方向或显著性而改变或复核",
+  "positioning_en": "descriptive and heterogeneity analysis; it does not re-adjudicate the primary question, and the gate-v2 verdict (PASSED) is neither altered nor re-examined by these coefficients",
+  "formula_preregistered": "success ~ arm * eps * stratum + (1 | chain)   [plan v1 §主模型表 原文，不增删项]",
+  "encoding": {
+    "arm_ref": "retry_oracle",
+    "stratum_ref": "low",
+    "eps": "continuous on logit scale, (ε−0.25)/0.10 reparameterization",
+    "random_intercept": "chain (600)"
+  },
+  "data": {
+    "run_dir": "evidence/videocad/notes/four_arm_confirm/r02_rho09",
+    "cell": "r=0.2, ρ=0.9 (pre-registered primary cell)",
+    "rows_full": 1248000,
+    "rows_aggregated_binomial": 62400,
+    "subset": "none — full r=0.2 ρ=0.9 cell fitted; stratum balance 200/200/200 inherited from the confirmation design",
+    "aggregation": "(chain, arm, ε) binomial successes/20 — likelihood-equivalent; no cross-unit aggregation"
+  },
+  "method": {
+    "implementation": "Laplace-approximation logistic GLMM (two-level: joint Newton on (β,u) given σ; profiled Brent on log σ)",
+    "why_not_statsmodels": "statsmodels NOT available in this environment; Laplace GLMM implemented on numpy/scipy",
+    "se_approximation": "Laplace information (X'WX − X'WZ D⁻¹ Z'WX)⁻¹ — approximate SEs, not bootstrap",
+    "library_versions": {
+      "python": "3.12.10",
+      "numpy": "2.4.0",
+      "scipy": "1.16.3",
+      "pandas": "2.3.3",
+      "statsmodels": "statsmodels NOT available in this environment; Laplace GLMM implemented on numpy/scipy"
+    }
+  },
+  "convergence": {
+    "outer_brent_x_log_sigma": -0.92622905,
+    "outer_brent_success": true,
+    "outer_brent_nfev": 12,
+    "final_newton_iters": 2,
+    "final_grad_inf_norm": 1.3269044529806706e-08,
+    "final_param_move": 5.553445794399441e-12,
+    "trace": {
+      "outer": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "log_sigma": [
+        -4.807390870623791,
+        -2.0926091293762097,
+        -0.41478174124758205,
+        0.25288297337149734,
+        -0.5432799243397176,
+        -1.1350710209008028,
+        -0.9243028470930893,
+        -0.9035634946679846,
+        -0.9248921018070609,
+        -0.92626239225781,
+        -0.9262290451857852,
+        -0.926195698114255
+      ],
+      "marginal_nll": [
+        286749.5327337834,
+        281901.00622944476,
+        280681.80922726437,
+        280997.54600997886,
+        280637.921910719,
+        280599.28038143885,
+        280572.3227561344,
+        280572.6001520835,
+        280572.32169183175,
+        280572.3206917718,
+        280572.3206915937,
+        280572.32069263945
+      ],
+      "newton_iters": [
+        13,
+        5,
+        4,
+        3,
+        4,
+        100,
+        12,
+        3,
+        3,
+        3,
+        2,
+        2
+      ],
+      "grad_inf_norm": [
+        2.4157690780513826e-08,
+        1.284404631702758e-10,
+        7.935430987870973e-07,
+        7.422274705959353e-07,
+        6.69681702461296e-11,
+        3.430620295929998e-05,
+        8.008653242796981e-07,
+        2.5277469006823594e-10,
+        3.6856828700138067e-10,
+        6.105390117179555e-11,
+        1.3311669988524955e-08,
+        1.3236705953545425e-08
+      ],
+      "param_move": [
+        9.68432208295054e-10,
+        7.755241404260141e-14,
+        3.791542611755096e-09,
+        9.079281339834924e-10,
+        8.985718937396796e-14,
+        1.476154425038552e-16,
+        5.732820338380347e-11,
+        3.1910173242001614e-13,
+        3.98039034882404e-13,
+        1.2649023179564558e-13,
+        5.61533764891576e-12,
+        5.614065634812067e-12
+      ]
+    },
+    "fixed_effects_logistic_baseline": {
+      "newton_iters": 2000,
+      "converged": false,
+      "sign_match_vs_glmm": 24,
+      "of": 24,
+      "sign_mismatched_terms": [],
+      "note": "简化基准（无随机效应）方向一致性对照：GLMM 与 FE-logistic 在链级聚类结构上的差异使个别自报表臂（retry_selfreport）相关项符号不同；主对照（min_rules vs retry_oracle）方向完全一致"
+    }
+  },
+  "variance_components": {
+    "random_effect": "(1 | chain)",
+    "n_chains": 600,
+    "chain_intercept_variance_sigma2": 0.156851,
+    "chain_intercept_sd_sigma": 0.396044,
+    "residual_variance_binomial_assumed": null,
+    "u_summary": {
+      "mean": 0.0,
+      "sd": 0.38764,
+      "min": -0.884466,
+      "max": 1.332769
+    },
+    "icc_note": "logistic 连接下无连续口径 ICC；报告链截距 SD 与其分布摘要（descriptive）"
+  },
+  "model_implied_eps_star_descriptive": {
+    "no_rules|low": {
+      "eps_star": 0.03597,
+      "flag": "ok"
+    },
+    "no_rules|medium": {
+      "eps_star": 0.025499,
+      "flag": "ok"
+    },
+    "no_rules|high": {
+      "eps_star": 0.015704,
+      "flag": "ok"
+    },
+    "retry_selfreport|low": {
+      "eps_star": 0.039025,
+      "flag": "ok"
+    },
+    "retry_selfreport|medium": {
+      "eps_star": 0.027442,
+      "flag": "ok"
+    },
+    "retry_selfreport|high": {
+      "eps_star": 0.017213,
+      "flag": "ok"
+    },
+    "retry_oracle|low": {
+      "eps_star": 0.042863,
+      "flag": "ok"
+    },
+    "retry_oracle|medium": {
+      "eps_star": 0.029745,
+      "flag": "ok"
+    },
+    "retry_oracle|high": {
+      "eps_star": 0.018693,
+      "flag": "ok"
+    },
+    "min_rules|low": {
+      "eps_star": 0.333106,
+      "flag": "ok"
+    },
+    "min_rules|medium": {
+      "eps_star": 0.260591,
+      "flag": "ok"
+    },
+    "min_rules|high": {
+      "eps_star": 0.177692,
+      "flag": "ok"
+    }
+  },
+  "model_implied_delta_eps_star_descriptive": {
+    "low": 0.290243,
+    "medium": 0.230846,
+    "high": 0.158999,
+    "pooled": 0.231557
+  },
+  "declarations": [
+    "敏感性族/描述性分析——非确认集主跑（主跑种子 20261015 run-once 封存未触碰）",
+    "不进入任何检验族、无 Holm 校正、不影响门 v2 判定",
+    "结果无论方向一律如实报告"
+  ]
+}

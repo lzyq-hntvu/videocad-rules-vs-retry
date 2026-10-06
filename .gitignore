@@ -33,3 +33,5 @@ evidence/videocad/notes/h1_proxy_experiment/cache_images/
 # 确认集 per-run 大表（约 100MB×6）：可一键再生成，不入库；
 # 论文补充材料走数据仓库（Zenodo/OSF），git 只留结论件（curve/eps_star/fail_mix/summary/plot）
 evidence/videocad/notes/four_arm_confirm/*/per_run_results.csv
+# 规则消融 per-run 大表（122M, 1200 万行）：同上一致，结论件已入库，原始表由 run_rule_ablation.py 再生成
+evidence/videocad/notes/rule_ablation/per_run_results.csv

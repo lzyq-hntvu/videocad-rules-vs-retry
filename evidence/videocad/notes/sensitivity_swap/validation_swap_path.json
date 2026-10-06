@@ -1,0 +1,32 @@
+{
+  "validation": "swap_prob path identity vs authoritative engine",
+  "method": "runner script evidence/videocad/scripts/run_swap_sensitivity.sh invokes evidence/videocad/scripts/run_four_arm_experiment.py (authoritative engine) verbatim with --swap-prob passed through; therefore the swap_prob path IS the engine path by construction. Independently verified: (1) two direct engine CLI invocations with identical dev args (per-label 10, replicates 3, eps 0/0.04/0.10/0.20, k=2, r=0.2, rho=0.5, swap-prob 0.7, dev seed 20261022) produce byte-identical per_run_results.csv / curve_summary.csv / eps_star.csv (summary.json differs only in its own output-path string); (2) 120 random (chain, eps, replicate, arm) triples compared field-by-field across the two runs: 0 mismatches across all fields.",
+  "dev_seed": 20261022,
+  "dev_seed_declaration": "validation/dev seed, distinct from 20260915/20260916 (sampling), 20261015 (confirm run, untouched), 20261016 (ablation), 20261017 (k-sensitivity), 20261018-20261019 (prior bootstrap/validation), 20261020 (this family's injection), 20261021 (this family's bootstrap)",
+  "byte_identical_files": {
+    "per_run_results.csv": true,
+    "curve_summary.csv": true,
+    "eps_star.csv": true
+  },
+  "n_triples": 120,
+  "fields_compared": [
+    "sample_id",
+    "complexity_label",
+    "arm",
+    "epsilon",
+    "replicate",
+    "success",
+    "fail_step_idx",
+    "fail_reason",
+    "fail_step_ratio",
+    "mismatch_count",
+    "mismatch_rate",
+    "repaired_events",
+    "attempts_made",
+    "abandoned",
+    "budget",
+    "event_count"
+  ],
+  "field_mismatches": 0,
+  "confirm_set_untouched": "no engine invocation anywhere in this analysis used the confirmation-run seed 20261015 or read-wrote any four_arm_confirm/ file"
+}
